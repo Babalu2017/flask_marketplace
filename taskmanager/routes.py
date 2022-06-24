@@ -30,3 +30,10 @@ def edit_category(any_name_category_id):
         db.session.commit()
         return redirect(url_for("categories")) #categories comes from the first function see top page line 12
     return render_template("edit_category.html", categoryTemp=categoryFunc)
+
+@app.route("/delete_category/<int:any_name_category_id>")
+def delete_category(any_name_category_id):
+    categoryFunc = Category.query.get_or_404(any_name_category_id)
+    db.session.delete(categoryFunc)
+    db.session.commit()
+    return redirect(url_for("categories")) #categories comes from the first function see top page line 12
