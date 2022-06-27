@@ -29,12 +29,13 @@
                 <div id="modal-{{ category.id }}" class="modal">
                     <div class="modal-content">
                         <h4>Are you sure you want to delete this Category?</h4>
-                        <p>This action cannot be undone.</p>
+                        <h5 class="red-text text-darken-2">WARNING: this will delete all related tasks !</h5>
+                        <p class="red-text text-darken-2">- This action cannot be undone -</p>
                     </div>
                     <div class="modal-footer">
                         <a href="{{ url_for('delete_category', any_name_category_id=category.id) }}"
-                            class="btn red">Delete</a>
-                    <a href="{{ url_for('categories') }}" class="btn green accent-4">Cancel</a>
+                            class="btn red">YES</a>
+                    <a href="{{ url_for('categories') }}" class="btn green accent-4">NO</a>
 
                     </div>
                 </div>

@@ -9,7 +9,11 @@ main {
   flex: 1 0 auto;
 }
 
-/* align center buttons inside modal */
+/* align center inside modal */
+.modal-task-test {
+  text-align: center !important;
+}
+
 .modal-footer {
   text-align: center !important;
 }

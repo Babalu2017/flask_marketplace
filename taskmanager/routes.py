@@ -54,3 +54,24 @@ def add_task():
         db.session.commit()
         return redirect(url_for("home"))
     return render_template("add_task.html", categories=categories)
+
+@app.route("/edit_task/<int:any_task_id>", methods=["GET", "POST"])
+def edit_task(any_task_id):
+    taskFunc = Task.query.get_or_404(any_task_id)
+    categories = list(Category.query.order_by(Category.category_name).all())
+    if request.method == "POST":
+        taskFunc.name = request.form.get("task_name")
+        taskFunc.description = request.form.get("task_description")
+        taskFunc.is_urgent = bool(True if request.form.get("is_urgent") else False)
+        taskFunc.due_date = request.form.get("due_date")
+        taskFunc.category_id = request.form.get("category_id")
+        db.session.commit()
+        return redirect(url_for("home"))
+    return render_template("edit_task.html", task=taskFunc, categories=categories)
+
+@app.route("/delete_task/<int:any_task_id>")
+def delete_task(any_task_id):
+    taskFunc = Task.query.get_or_404(any_task_id)
+    db.session.delete(taskFunc)
+    db.session.commit()
+    return redirect(url_for("home")) #home comes from the first function see top page line 8
