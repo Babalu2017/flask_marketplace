@@ -24,3 +24,20 @@ main {
   float: none;
   /*if you set float already */
 }
+
+
+
+/* extend validation to options in form */
+select[required]:focus{
+  outline: none !important;
+}
+
+select[required]{
+  display: block;
+  padding: 0;
+  position: absolute;
+  background: transparent;
+  color: transparent;
+  border: none;
+  top: 0;
+}
