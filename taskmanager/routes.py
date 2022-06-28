@@ -1,3 +1,4 @@
+from lib2to3.pgen2 import driver
 from flask import render_template, request, redirect, url_for
 from taskmanager import app, db
 from taskmanager.models import Category, Task
@@ -6,8 +7,16 @@ from taskmanager.models import Category, Task
 
 @app.route("/")
 def home():
+    categories = list(Category.query.order_by(Category.category_name).all())
     tasksFunc = list(Task.query.order_by(Task.id).all())
-    return render_template("tasks.html", tasksTemplate=tasksFunc)
+    return render_template("tasks.html", tasksTemplate=tasksFunc, categories = categories)
+    # return render_template("tasks.html", tasksTemplate=tasksFunc)
+
+
+
+
+ 
+ 
 
 @app.route("/categories") 
 def categories(): #first function
