@@ -20,8 +20,8 @@ def home():
 
 @app.route("/categories") 
 def categories(): #first function
-    categories_added = list(Category.query.order_by(Category.category_name).all())
-    return render_template("categories.html", categoriesTemplate=categories_added) # categoriesTemplate will be usend inside the html template with jinja notation{{%%}}.It's a list so it can be iterated with a for loop
+    categories = list(Category.query.order_by(Category.category_name).all())
+    return render_template("categories.html", categories = categories) # the first categories(FIRST:categories = SECOND:categories) will be usend inside the html template with jinja notation{{%%}}.The second is the name variable that grab all the categories from the database. It's a list so it can be iterated with a for loop
 
 @app.route("/add_category", methods=["GET", "POST"])
 def add_category():
