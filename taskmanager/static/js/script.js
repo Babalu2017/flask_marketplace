@@ -22,6 +22,14 @@ document.addEventListener('DOMContentLoaded', function () {
   let collap = document.querySelectorAll('.collapsible');
   M.Collapsible.init(collap);
 
+  // init chips
+  let chips = document.querySelectorAll('.chips');
+  M.Chips.init(chips);
+
+  $(".dropdown-trigger").dropdown();
+
+
+
 });
 
 

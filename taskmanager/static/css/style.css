@@ -41,3 +41,20 @@ select[required]{
   border: none;
   top: 0;
 }
+
+
+#dropdown1 {
+  left: 0.5%;
+  right: auto;
+  transform: translatey(-110%);
+}
+
+@media (max-width:540px) {
+  
+  .users_display {
+    text-align: center;
+  }
+
+
+
+}

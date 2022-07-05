@@ -52,7 +52,9 @@
                 <select id="category_id" name="category_id" class="validate" required>
                     <option value="" disabled selected>Choose Category</option>
                     {% for category in categories %}
+                    {% if category.user_id == current_user_id %}
                     <option value="{{ category.id }}">{{ category.category_name }}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
                 <label for="category_id">Category</label>

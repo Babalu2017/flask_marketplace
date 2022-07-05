@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+            type="text/css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <title>Task Manager</title>
+    </head>
+</head>
+
+<body>
+    <header>
+        <!-- top navbar -->
+        <nav class="light-blue darken-1">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo" style="margin-left: 15px;">Task Manager</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+
+                    <li><a href="{{ url_for('sign_up') }}">Sign Up</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- mobile sidenav -->
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <!-- <li><a href="{{ url_for('add_task') }}">New Task</a></li> -->
+
+            <li><a href="{{ url_for('sign_up') }}">Sign Up</a></li>
+        </ul>
+    </header>
+    <main class="container">
+
+        <div class="row">
+            <div class="col s12">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error_login' %}
+
+                <div id="chip_msg" class="chip center-align card-panel red lighten-2"
+                    style="color: #fafafa; padding: 10px 10px 10px 10px; width: 100%; height: 50px;"> {{ message }}
+                    <i class="close material-icons">close</i>
+                </div>
+
+
+                {% else %}
+
+                <!-- <div class="chip center-align card-panel green lighten-2"
+                    style="color: #fafafa; padding: 10px 10px 10px 10px; width: 100%; height: 50px;"> {{ message }}
+                    <i class="close material-icons">close</i>
+                </div> -->
+
+
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div  class="users_display col s12 m6">
+                <div class="users_display s12 m6">
+                    <h3><strong>Recent logins</strong></h3>
+                    <p>Click your picture.</p>
+                </div>
+                <ul>
+                    {% for user in users %}
+                    <li>
+                        <strong>
+                            {{user.username}}
+                        </strong>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="col s12 m6">
+                <div class="card blue-grey lighten-1 hoverable">
+                    <div class="card-content white-text">
+                        <span class="card-title center-align">Login</span>
+
+                        <div class="row">
+                            <form class="col s12" method="POST" action="">
+                                <!-- <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">account_circle</i>
+                                        <input placeholder="Username" id="username" name="username" type="text"
+                                            class="validate" minlength="3" maxlength="20" required
+                                            style="color: #fafafa;">
+                                        <label for="username"></label>
+                                    </div>
+                                </div> -->
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">email</i>
+                                        <input placeholder="Email" id="email" name="email" type="email" class="validate"
+                                            required style="color: #fafafa;">
+                                        <label for="email"></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">vpn_key</i>
+                                        <input placeholder="Password" id="password" name="password" type="password"
+                                            class="validate" required style="color: #fafafa;">
+                                        <label for="password"></label>
+                                    </div>
+                                </div>
+                                <!-- submit button -->
+                                <div class="row">
+                                    <div class="col s12 center-align">
+                                        <button type="submit" class="btn-large blue" style="width: 100%">
+                                            Login
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col s12 center-align">
+                                <a href="#" style="color: #fafafa;">Forgotten Password?</a>
+                            </div>
+                            <div class="col s12 center-align card-action">
+                                <a href="{{ url_for('sign_up') }}" id="sign_up_button" class="btn-large green">
+                                    Create New Account
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer blue darken-3">
+        <div class="footer-copyright">
+            <div class="container">
+                For educational purposes only
+                <a class="white-text right" href="https://codeinstitute.net" target="_blank">&copy; Code Institute</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const container = document.querySelector('.container');
+        function removeChipMessage(event) {
+            document.getElementById('chip_msg').remove();
+            console.log('something was clicked!');
+        }
+
+        // container.onmousedown = setInterval(removeChipMessage, 3000);
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

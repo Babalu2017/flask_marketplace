@@ -13,6 +13,7 @@
 
 <div class="row">
     {% for category in categories %}
+    {% if category.user_id == current_user_id %}
     <div class="col s12 m6 l3">
         <div class="card light-blue darken-4 center-align">
             <div class="card-content white-text">
@@ -42,6 +43,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
 </div>
 

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+            type="text/css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <title>Task Manager</title>
+    </head>
+</head>
+
+<body>
+    <header>
+        <!-- top navbar -->
+        <nav class="light-blue darken-1">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo" style="margin-left: 15px;">Task Manager</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+
+                    <li><a href="{{ url_for('sign_up') }}">Sign Up</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- mobile sidenav -->
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <!-- <li><a href="{{ url_for('add_task') }}">New Task</a></li> -->
+
+            <li><a href="{{ url_for('sign_up') }}">Sign Up</a></li>
+        </ul>
+    </header>
+    <main class="container">
+
+        <div class="row" style="margin-top: 25px;">
+            <div class="col s12">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+
+                <div class="chip center-align card-panel red lighten-2"
+                    style="color: #fafafa; padding: 10px 10px 10px 10px; width: 100%; height: 50px;"> {{ message }}
+                    <i class="close material-icons">close</i>
+                </div>
+
+
+                {% else %}
+
+                <div class="chip center-align card-panel green lighten-2"
+                    style="color: #fafafa; padding: 10px 10px 10px 10px; width: 100%; height: 50px;"> {{ message }}
+                    <i class="close material-icons">close</i>
+                </div>
+
+
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card blue-grey lighten-1 hoverable">
+                    <div class="card-content white-text">
+                        <span class="card-title center-align">Sign Up</span>
+                        <p class="center-align">It's quick and easy !</p>
+
+                        <div class="row">
+                            <form class="col s12" method="POST" action="">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">account_circle</i>
+                                        <input class="validate" placeholder="Username" id="username" name="username"
+                                            type="text" minlength="3" maxlength="20" style="color: #fafafa;">
+                                        <label for="username"></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">email</i>
+                                        <input placeholder="Email" class="validate" id="email" name="email" type="email"
+                                            style="color: #fafafa;">
+                                        <label for="email"></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">vpn_key</i>
+                                        <input class="validate" placeholder="Password" id="password" name="password"
+                                            type="password" style="color: #fafafa;">
+                                        <label for="password"></label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">vpn_key</i>
+                                        <input class="validate" placeholder="Confirm Password" id="password2"
+                                            name="password2" class="validate" type="password" style="color: #fafafa;">
+                                        <label for="password2"></label>
+                                    </div>
+                                </div>
+                                <!-- submit button -->
+                                <div class="row">
+                                    <div class="col s12 center-align">
+                                        <button type="submit" class="btn-large blue" style="width: 100%">
+                                            Sign Up
+                                        </button>
+                                    </div>
+                                </div>
+                                <p style="margin-top: 15px;">By clicking Sign Up, you agree to our Terms. Learn how we
+                                    collect, use and share your data in our Data Policy and how we use cookies and
+                                    similar technology in our Cookie Policy. You may receive SMS notifications from us
+                                    and can opt out at any time.</p>
+                            </form>
+                            <div class="col s12 center-align card-action">
+                                <a href="{{ url_for('login') }}" id="login_button" class="btn-large green">
+                                    Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer blue darken-3">
+        <div class="footer-copyright">
+            <div class="container">
+                For educational purposes only
+                <a class="white-text right" href="https://codeinstitute.net" target="_blank">&copy; Code Institute</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
