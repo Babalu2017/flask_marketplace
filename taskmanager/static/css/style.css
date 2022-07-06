@@ -43,11 +43,13 @@ select[required]{
 }
 
 
-#dropdown1 {
+#dropdown1, #dropdown2  {
   left: 0.5%;
   right: auto;
   transform: translatey(-110%);
 }
+
+
 
 @media (max-width:540px) {
   
