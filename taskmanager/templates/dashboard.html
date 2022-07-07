@@ -1,39 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="light-blue-text text-darken-4 center-align">Tasks</h3>
+<h3 class="light-blue-text text-darken-4 center-align">Dashboard</h3>
 
-<div class="row">
-    <div class="col s12 center-align">
-        {% if category_filter|length > 0 %}
-            <a href="{{ url_for('add_task') }}" id="task_button" class="waves-effect btn-large light-blue darken-2">
-                Add Task <i class="fas fa-plus-square right"></i>
-            </a>
-        {% else %}
-            <a href="#modal" class="waves-effect waves-light btn-large light-blue darken-2 modal-trigger">Add Task <i class="fas fa-plus-square right"></i></a>
-        {% endif %}
-        
-
-         <!-- Modal -->
-         <div id="modal" class="modal">
-            <div class="modal-content">
-                <h4>Categories list is empty. You cannot add any tasks !</h4>
-                <h4 class="red-text text-darken-2">Would you like add one ?</h4>
-            </div>
-            <div class="modal-footer">
-                <a href="{{ url_for('categories') }}"
-                    class="btn green accent-4">YES</a>
-            <a href="{{ url_for('home') }}" class="btn red">NO</a>
-            </div>
-        </div>
-
-
-    </div>
-</div>
 
 <ul class="collapsible">
     {% for task in tasksTemplate|sort(attribute="due_date") %}
-    {% if task.user_id == current_user_id %}
     <li>
         <div class="collapsible-header white-text light-blue darken-4">
             <i class="fas fa-caret-down"></i>
@@ -43,6 +15,7 @@
             {% endif %}
         </div>
         <div class="collapsible-body">
+            <h6><strong>Author: {{ task.user.username}}</strong></h6>
             <strong>Category: {{ task.category.category_name }}</strong>
             <p> {{ task.task_description }}</p>
             <p>
@@ -63,7 +36,6 @@
             </div>
         </div>
     </li>
-    {% endif %}
     {% endfor %}
 </ul>
 

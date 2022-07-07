@@ -16,7 +16,8 @@ class User(db.Model, UserMixin):
     tasks = db.relationship("Task", backref="user", cascade="all, delete", lazy=True)
 
     def __repr__(self):
-        return '<User %r>' % self.id, self.username
+        # return '<User %r>' % self.id, self.username
+        return f"<User %r>' % self.id, self.username"
 
     
 
@@ -30,10 +31,11 @@ class Category(db.Model):
 
     def __repr__(self):
         # __repr__ to represent itself in the form of a string
-        return f"Category: {self.category_name}"
-        # return "#{0} - Category: {1}".format(
-        #     self.id, self.category_name
-        # )
+        # return f"Category: {self.id, self.category_name, self.user_id,}"
+        
+        return "#{0} - Category: {1} | User_id: {2}".format(
+            self.id, self.category_name, self.user_id
+        )
         
 
 
@@ -45,7 +47,7 @@ class Task(db.Model):
     is_urgent = db.Column(db.Boolean, default=False, nullable=False)
     due_date = db.Column(db.Date, nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("category.id", ondelete="CASCADE"), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     
 
     def __repr__(self):

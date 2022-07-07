@@ -21,6 +21,7 @@
 
     <header>
         <!-- top navbar -->
+        <!-- dropdown content for user link -->
         <ul id="dropdown1" class="dropdown-content">
             <li>
                 <a href="{{ url_for('logout') }}">Logout</a>
@@ -29,19 +30,19 @@
         <nav class="light-blue darken-1">
             <div class="nav-wrapper">
                 
-                <a href="{{ url_for('home') }}" class="brand-logo" style="margin-left: 15px;">Task Manager</a>
+                <a href="{{ url_for('dashboard') }}" class="brand-logo" style="margin-left: 15px;">Task Manager</a>
                 
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
                 <ul class="right hide-on-med-and-down">
-                    <li><a href="{{ url_for('home')}}">Home</a></li>
-                    <!-- <li><a href="{{ url_for('add_task') }}">New Task</a></li> -->
-                    {% if categories|length > 0 %}
+                    <li><a href="{{ url_for('dashboard')}}">Dashboard</a></li>
+                    <li><a href="{{ url_for('home')}}">My Tasks</a></li>
+
+                    <!-- add task page With modal option -->
+                    {% if category_filter|length > 0 %}
                     <li><a href="{{ url_for('add_task') }}">New Task</a></li>
                     {% else %}
                     <li><a href="#modal3" class="modal-trigger">New Task</a></li>
                     {% endif %}
-
-
 
                     <!-- Modal -->
                     <div id="modal3" class="modal" style="overflow-y: hidden;">
@@ -57,9 +58,7 @@
                     </div>
 
                     <li><a href="{{ url_for('categories') }}">Categories</a></li>
-                    <!-- {% for user in users %}
-                    <li id="current_user"><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{ user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
-                    {% endfor %} -->
+                    
                     
                     <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{ users }}<i class="material-icons right">arrow_drop_down</i></a></li>
                     
@@ -69,22 +68,22 @@
         </nav>
 
         <!-- mobile sidenav -->
+        <!-- mobile dropdown content for user link -->
         <ul id="dropdown2" class="dropdown-content">
             <li>
                 <a href="{{ url_for('logout') }}">Logout</a>
             </li>
         </ul>
         <ul class="sidenav" id="mobile-demo">
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <!-- <li><a href="{{ url_for('add_task') }}">New Task</a></li> -->
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('home') }}">My Tasks</a></li>
 
-            {% if categories|length > 0 %}
+            <!-- add task page with modal -->
+            {% if category_filter|length > 0  %}
                 <li><a href="{{ url_for('add_task') }}">New Task</a></li>
             {% else %}
                 <li><a href="#modal2" class="modal-trigger">New Task</a></li>
             {% endif %}
-
-
 
             <!-- Modal -->
             <div id="modal2" class="modal">
@@ -97,10 +96,9 @@
                     <a href="{{ url_for('home') }}" class="btn-small red">NO</a>
                 </div>
             </div>
+
             <li><a href="{{ url_for('categories') }}">Categories</a></li>
-            <!-- {% for user in users %}
-                    <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">{{ user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
-            {% endfor %} -->
+
             <li id="current_user"><a class="dropdown-trigger" href="#!" data-target="dropdown2">{{ users }}<i class="material-icons right">arrow_drop_down</i></a></li>
 
             <!-- <li><a href="{{ url_for('logout') }}">Logout</a></li> -->
