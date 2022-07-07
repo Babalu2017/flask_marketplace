@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <title>Task Manager</title>
+    <title>Market Place</title>
 </head>
 
 <body>
@@ -29,33 +29,33 @@
         </ul>
         <nav class="light-blue darken-1">
             <div class="nav-wrapper">
-                    <!-- <a href="{{ url_for('dashboard') }}" class="brand-logo" style="margin-left: 15px;">Task Manager</a> -->
-                    <a href="{{ url_for('dashboard') }}" class="brand-logo" >Task Manager</a>
+                    <!-- <a href="{{ url_for('dashboard') }}" class="brand-logo" style="margin-left: 15px;">item Manager</a> -->
+                    <a href="{{ url_for('dashboard') }}" class="brand-logo" >Market Place</a>
               
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
                 <ul class="right hide-on-med-and-down">
                     <li><a href="{{ url_for('dashboard')}}">Dashboard</a></li>
-                    <li><a href="{{ url_for('home')}}">My Tasks</a></li>
+                    <li><a href="{{ url_for('home')}}">My items</a></li>
 
-                    <!-- add task page With modal option -->
-                    {% if category_filter|length > 0 %}
-                    <li><a href="{{ url_for('add_task') }}">New Task</a></li>
+                    <!-- add item page With modal option -->
+                    <!-- {% if category_filter|length > 0 %}
+                    <li><a href="{{ url_for('add_item') }}">New item</a></li>
                     {% else %}
-                    <li><a href="#modal3" class="modal-trigger">New Task</a></li>
-                    {% endif %}
+                    <li><a href="#modal3" class="modal-trigger">New item</a></li>
+                    {% endif %} -->
 
                     <!-- Modal -->
-                    <div id="modal3" class="modal" style="overflow-y: hidden;">
+                    <!-- <div id="modal3" class="modal" style="overflow-y: hidden;">
                         <div class="modal-content">
-                            <h5 class="black-text modal-task-test">Categories list is empty. You cannot add any tasks !
+                            <h5 class="black-text modal-item-test">Categories list is empty. You cannot add any items !
                             </h5>
-                            <h5 class="red-text text-darken-2 modal-task-test">Would you like add one ?</h5>
+                            <h5 class="red-text text-darken-2 modal-item-test">Would you like add one ?</h5>
                         </div>
                         <div class="modal-footer" style="margin-bottom: 25px;">
                             <a href="{{ url_for('categories') }}" class="btn-small green accent-4">YES</a>
                             <a href="{{ url_for('home') }}" class="btn-small red">NO</a>
                         </div>
-                    </div>
+                    </div> -->
 
                     <li><a href="{{ url_for('categories') }}">Categories</a></li>
                     
@@ -76,20 +76,20 @@
         </ul>
         <ul class="sidenav" id="mobile-demo">
             <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ url_for('home') }}">My Tasks</a></li>
+            <li><a href="{{ url_for('home') }}">My items</a></li>
 
-            <!-- add task page with modal -->
+            <!-- add item page with modal -->
             {% if category_filter|length > 0  %}
-                <li><a href="{{ url_for('add_task') }}">New Task</a></li>
+                <li><a href="{{ url_for('add_item') }}">New item</a></li>
             {% else %}
-                <li><a href="#modal2" class="modal-trigger">New Task</a></li>
+                <li><a href="#modal2" class="modal-trigger">New item</a></li>
             {% endif %}
 
             <!-- Modal -->
             <div id="modal2" class="modal">
                 <div class="modal-content">
-                    <h5 class="black-text modal-task-test">Categories list is empty. You cannot add any tasks !</h5>
-                    <h5 class="red-text text-darken-2 modal-task-test">Would you like add one ?</h5>
+                    <h5 class="black-text modal-item-test">Categories list is empty. You cannot add any items !</h5>
+                    <h5 class="red-text text-darken-2 modal-item-test">Would you like add one ?</h5>
                 </div>
                 <div class="modal-footer">
                     <a href="{{ url_for('categories') }}" class="btn-small green accent-4">YES</a>

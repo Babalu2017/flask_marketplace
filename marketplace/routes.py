@@ -2,8 +2,8 @@ import os
 import pwd
 import getpass
 from flask import render_template, request, redirect, url_for, flash, session
-from taskmanager import app, db
-from taskmanager.models import Category, Task, User
+from marketplace import app, db
+from marketplace.models import Category, Item, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
@@ -13,9 +13,10 @@ def dashboard():
     current_user_id = current_user.id
     users = current_user.username
     categories = list(Category.query.order_by(Category.id).all())
-    tasksFunc = list(Task.query.order_by(Task.id).all())
+    itemFunc = list(Item.query.order_by(Item.id).all())
 
-    return render_template("dashboard.html", tasksTemplate=tasksFunc, categories = categories, users=users, current_user_id=current_user_id)
+    return render_template("dashboard.html", 
+    itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id)
 
 
 @app.route("/home")
@@ -31,9 +32,8 @@ def home():
     categories = list(Category.query.order_by(Category.id).all())
     category_filter = list(Category.query.filter(Category.user_id == current_user_id))
 
-    tasksFunc = list(Task.query.order_by(Task.id).all())
-    return render_template("tasks.html", category_filter=category_filter, tasksTemplate=tasksFunc, categories = categories, users=users, current_user_id=current_user_id)
-    # return render_template("tasks.html", tasksTemplate=tasksFunc)
+    itemFunc = list(Item.query.order_by(Item.id).all())
+    return render_template("items.html", category_filter=category_filter, itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id)
 
 
 # Authentication
@@ -53,7 +53,6 @@ def login():
             if check_password_hash(user.password, password):
                 # flash('Logged in successfully', category='success')
                 login_user(user, remember=True)
-                # return render_template("tasks.html")
                 return redirect(url_for("dashboard"))
             else:
                 flash('Incorrect password, try again', category='error_login')
@@ -110,7 +109,7 @@ def categories(): #first function
     print(f"here: {current_user.id}")
     current_user_id = current_user.id
     users = current_user.username
-    tasksFunc = list(Task.query.order_by(Task.id).all())
+    itemFunc = list(Item.query.order_by(Item.id).all())
 
     # users = list(User.query.order_by(User.id).all())
     # categories = list(Category.query.order_by(Category.category_name).all())
@@ -121,7 +120,7 @@ def categories(): #first function
 
     # print(f"user_id: {categories}")
 
-    return render_template("categories.html", category_filter=category_filter, categories = categories, users=users, tasksTemplate=tasksFunc, current_user_id=current_user_id) # the first categories(FIRST:categories = SECOND:categories) will be usend inside the html template with jinja notation{{%%}}.The second is the name variable that grab all the categories from the database. It's a list so it can be iterated with a for loop
+    return render_template("categories.html", category_filter=category_filter, categories = categories, users=users, itemFunc=itemFunc, current_user_id=current_user_id) # the first categories(FIRST:categories = SECOND:categories) will be usend inside the html template with jinja notation{{%%}}.The second is the name variable that grab all the categories from the database. It's a list so it can be iterated with a for loop
 
 
 @app.route("/add_category", methods=["GET", "POST"])
@@ -160,9 +159,9 @@ def delete_category(any_name_category_id):
     db.session.commit()
     return redirect(url_for("categories")) #categories comes from the first function see top page line 12
 
-@app.route("/add_task", methods=["GET", "POST"])
+@app.route("/add_item", methods=["GET", "POST"])
 @login_required
-def add_task():
+def add_item():
     current_user_id = current_user.id
     users = current_user.username
     # users = list(User.query.order_by(User.id).all())
@@ -170,42 +169,42 @@ def add_task():
     categories = list(Category.query.order_by(Category.id).all())
 
     if request.method == "POST":
-        task = Task(
-            task_name=request.form.get("task_name"),
-            task_description=request.form.get("task_description"),
+        item = Item(
+            item_name=request.form.get("item_name"),
+            item_description=request.form.get("item_description"),
             is_urgent=bool(True if request.form.get("is_urgent") else False),
             due_date=request.form.get("due_date"),
             category_id=request.form.get("category_id"),
             user_id=current_user.id
 
         )
-        db.session.add(task)
+        db.session.add(item)
         db.session.commit()
         return redirect(url_for("home"))
-    return render_template("add_task.html", categories=categories, users=users, current_user_id=current_user_id)
+    return render_template("add_item.html", categories=categories, users=users, current_user_id=current_user_id)
 
-@app.route("/edit_task/<int:any_task_id>", methods=["GET", "POST"])
+@app.route("/edit_item/<int:any_item_id>", methods=["GET", "POST"])
 @login_required
-def edit_task(any_task_id):
+def edit_item(any_item_id):
     users = current_user.username
-    taskFunc = Task.query.get_or_404(any_task_id)
+    item = Item.query.get_or_404(any_item_id)
     # categories = list(Category.query.order_by(Category.category_name).all())
     categories = list(Category.query.order_by(Category.id).all())
 
     if request.method == "POST":
-        taskFunc.name = request.form.get("task_name")
-        taskFunc.description = request.form.get("task_description")
-        taskFunc.is_urgent = bool(True if request.form.get("is_urgent") else False)
-        taskFunc.due_date = request.form.get("due_date")
-        taskFunc.category_id = request.form.get("category_id")
+        item.item_name = request.form.get("item_name")
+        item.item_description = request.form.get("item_description")
+        item.is_urgent = bool(True if request.form.get("is_urgent") else False)
+        item.due_date = request.form.get("due_date")
+        item.category_id = request.form.get("category_id")
         db.session.commit()
         return redirect(url_for("home"))
-    return render_template("edit_task.html", task=taskFunc, categories=categories, users=users)
+    return render_template("edit_item.html", item=item, categories=categories, users=users)
 
-@app.route("/delete_task/<int:any_task_id>")
+@app.route("/delete_item/<int:any_item_id>")
 @login_required
-def delete_task(any_task_id):
-    taskFunc = Task.query.get_or_404(any_task_id)
-    db.session.delete(taskFunc)
+def delete_item(any_item_id):
+    itemFunc = Item.query.get_or_404(any_item_id)
+    db.session.delete(itemFunc)
     db.session.commit()
     return redirect(url_for("home")) #home comes from the first function see top page line 8
