@@ -49,6 +49,9 @@ select[required]{
   transform: translatey(-110%);
 }
 
+.millard {
+  text-align: center;
+}
 
 
 @media (max-width:540px) {
