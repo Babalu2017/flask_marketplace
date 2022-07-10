@@ -1,10 +1,15 @@
 import os
-import pwd
-import getpass
+import uuid
 from flask import render_template, request, redirect, url_for, flash, session
 from marketplace import app, db
 from marketplace.models import Category, Item, User
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import urllib.request
+from datetime import datetime
+import psycopg2
+import psycopg2.extras
+
 from flask_login import login_user, login_required, logout_user, current_user
 
 @app.route("/")
@@ -159,6 +164,36 @@ def delete_category(any_name_category_id):
     db.session.commit()
     return redirect(url_for("categories")) #categories comes from the first function see top page line 12
 
+app.config['UPLOAD_FOLDER'] = "/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads"
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+ALLOWED_EXTENSIONS = set(['png','jpg','jpeg','gif'])
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# @app.route("/add_item", methods=["POST"])
+# @login_required
+# def upload_image():
+#     if 'file' not in request.files:
+#         flash('No file part')
+#         return redirect(request.url)
+#     file = request.files['file']
+#     if file.filename == '':
+#         flash('No image selected for uploading')
+#         return redirect(request.url)
+#     if file and allowed_file(file.filename):
+#         filename = secure_filename(file.filename)
+#         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#         #print('upload_image filename: ' + filename )
+#         flash('Image successfully uploaded and displayed below')
+#         return render_template('items.html', filename=filename)
+#     else:
+#         flash('Allowed image types are - png, jpg, jpeg, gif')
+#         return redirect(request.url)
+        
+
+
 @app.route("/add_item", methods=["GET", "POST"])
 @login_required
 def add_item():
@@ -168,20 +203,43 @@ def add_item():
     # categories = list(Category.query.order_by(Category.category_name).all())
     categories = list(Category.query.order_by(Category.id).all())
 
+    now = datetime.now().date()
+    # print(now)
+    
     if request.method == "POST":
+        files = request.files.getlist('files[]')
+        # print(files)
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                unique_filename = str(uuid.uuid1()) + "_" + filename
+                # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+                to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
+            # print(file)
+            files = unique_filename   
+            print(files)
+            print(now)
+        flash('File(s) successfully uploaded')
+
         item = Item(
             item_name=request.form.get("item_name"),
             item_description=request.form.get("item_description"),
             is_urgent=bool(True if request.form.get("is_urgent") else False),
             due_date=request.form.get("due_date"),
             category_id=request.form.get("category_id"),
+            file_img = unique_filename,
+            post_date = now,
             user_id=current_user.id
 
         )
+        
         db.session.add(item)
         db.session.commit()
         return redirect(url_for("home"))
     return render_template("add_item.html", categories=categories, users=users, current_user_id=current_user_id)
+
+
 
 @app.route("/edit_item/<int:any_item_id>", methods=["GET", "POST"])
 @login_required
@@ -201,6 +259,7 @@ def edit_item(any_item_id):
         return redirect(url_for("home"))
     return render_template("edit_item.html", item=item, categories=categories, users=users)
 
+
 @app.route("/delete_item/<int:any_item_id>")
 @login_required
 def delete_item(any_item_id):
@@ -208,3 +267,7 @@ def delete_item(any_item_id):
     db.session.delete(itemFunc)
     db.session.commit()
     return redirect(url_for("home")) #home comes from the first function see top page line 8
+
+
+
+

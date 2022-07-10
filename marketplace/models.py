@@ -1,3 +1,4 @@
+from enum import unique
 from marketplace import db, login_manager
 from flask_login import UserMixin
 
@@ -47,6 +48,8 @@ class Item(db.Model):
     is_urgent = db.Column(db.Boolean, default=False, nullable=False)
     due_date = db.Column(db.Date, nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("category.id", ondelete="CASCADE"), nullable=False)
+    file_img = db.Column(db.Text, unique=True, nullable=False)
+    post_date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     
 
@@ -55,4 +58,5 @@ class Item(db.Model):
         return "#{0} - Item: {1} | Urgent: {2}".format(
             self.id, self.item_name, self.is_urgent
         )
-        
+    
+
