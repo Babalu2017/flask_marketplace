@@ -1,12 +1,13 @@
 import os
 import uuid
+import pandas as pd
 from flask import render_template, request, redirect, url_for, flash, session
 from marketplace import app, db
 from marketplace.models import Category, Item, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import urllib.request
-from datetime import datetime
+import time
 import psycopg2
 import psycopg2.extras
 
@@ -17,11 +18,17 @@ from flask_login import login_user, login_required, logout_user, current_user
 def dashboard():
     current_user_id = current_user.id
     users = current_user.username
+
+    now = time.strftime("%d-%m-%Y %H:%M:%S")
+    new_time = now.split(" ")
+    date = new_time[0]
+    times = new_time[1]
+
     categories = list(Category.query.order_by(Category.id).all())
     itemFunc = list(Item.query.order_by(Item.id).all())
 
     return render_template("dashboard.html", 
-    itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id)
+    itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id, date=date, times=times)
 
 
 @app.route("/home")
@@ -203,23 +210,23 @@ def add_item():
     # categories = list(Category.query.order_by(Category.category_name).all())
     categories = list(Category.query.order_by(Category.id).all())
 
-    now = datetime.now().date()
-    # print(now)
-    
+    # now = datetime.now().date()
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+   
     if request.method == "POST":
         files = request.files.getlist('files[]')
-        # print(files)
+        print(f'from add_item {files}')
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 unique_filename = str(uuid.uuid1()) + "_" + filename
                 # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
-                to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
+                # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
             # print(file)
             files = unique_filename   
-            print(files)
-            print(now)
+            # print(files)
+            # print(now)
         flash('File(s) successfully uploaded')
 
         item = Item(
@@ -237,7 +244,7 @@ def add_item():
         db.session.add(item)
         db.session.commit()
         return redirect(url_for("home"))
-    return render_template("add_item.html", categories=categories, users=users, current_user_id=current_user_id)
+    return render_template("add_item.html", categories=categories, users=users, current_user_id=current_user_id )
 
 
 
@@ -248,13 +255,31 @@ def edit_item(any_item_id):
     item = Item.query.get_or_404(any_item_id)
     # categories = list(Category.query.order_by(Category.category_name).all())
     categories = list(Category.query.order_by(Category.id).all())
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+
+    files = request.files.getlist('files[]')
+
+    print(f'from edit_item: {files}')
+    for file in files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            unique_filename = str(uuid.uuid1()) + "_" + filename
+            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+            # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
+        # print(file)
+        files = unique_filename 
 
     if request.method == "POST":
+
         item.item_name = request.form.get("item_name")
         item.item_description = request.form.get("item_description")
         item.is_urgent = bool(True if request.form.get("is_urgent") else False)
         item.due_date = request.form.get("due_date")
         item.category_id = request.form.get("category_id")
+        item.file_img = files
+        item.post_date = now
+        item.user_id=current_user.id
         db.session.commit()
         return redirect(url_for("home"))
     return render_template("edit_item.html", item=item, categories=categories, users=users)

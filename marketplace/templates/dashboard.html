@@ -7,7 +7,7 @@
     {% for item in itemFunc|sort(attribute="due_date") %}
     <div class="col s12 m6">
         <div class="card">
-            <div class="card-image waves-effect waves-block waves-light">
+            <div class="card-image card-img-top waves-effect waves-block waves-light">
               <img class="image activator" src="{{ url_for('static',filename='img/uploads/' + item.file_img) }}">
             </div>
             <div class="card-content">
@@ -18,7 +18,7 @@
                 <i class="material-icons right">more_vert</i></span>
               <!-- <p><a href="#">This is a link</a></p> -->
               <p><strong>User: </strong>{{ item.user.username}}</p>
-              <p>Created on: {{ item.post_date }}</p>
+              <p>Listed on: {{ date }} at {{ times }}</p>
 
             </div>
             <div class="card-reveal">
