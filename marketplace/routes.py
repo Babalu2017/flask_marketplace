@@ -1,6 +1,5 @@
 import os
 import uuid
-import pandas as pd
 from flask import render_template, request, redirect, url_for, flash, session
 from marketplace import app, db
 from marketplace.models import Category, Item, User
