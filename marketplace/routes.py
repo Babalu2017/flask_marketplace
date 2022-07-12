@@ -1,7 +1,8 @@
 import os
 import uuid
+import boto3
 from flask import render_template, request, redirect, url_for, flash, session
-from marketplace import app, db
+from marketplace import app, db, s3, S3_BUCKET
 from marketplace.models import Category, Item, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -11,6 +12,7 @@ import psycopg2
 import psycopg2.extras
 
 from flask_login import login_user, login_required, logout_user, current_user
+
 
 @app.route("/")
 @login_required
