@@ -18,9 +18,9 @@ else:
         uri = uri.replace("postgres://", "postgresql://", 1)
     app.config["SQLALCHEMY_DATABASE_URI"] = uri #heroku _database_
 
-# S3_BUCKET = os.environ.get("S3_BUCKET")
-# S3_KEY = os.environ.get("S3_KEY")
-# S3_SECRET = os.environ.get("S3_SECRET")
+S3_BUCKET = os.environ.get("S3_BUCKET")
+S3_KEY = os.environ.get("S3_KEY")
+S3_SECRET = os.environ.get("S3_SECRET")
 
 
 

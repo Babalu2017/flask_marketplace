@@ -8,7 +8,10 @@
     <div class="col s12 m6">
         <div class="card">
             <div class="card-image card-img-top waves-effect waves-block waves-light">
-              <img class="image activator" src="{{ url_for('static',filename='img/uploads/' + item.file_img) }}">
+            <img class="image activator" src="{{ item.file_img }}">
+
+              <!-- <img class="image activator" src="{{ url_for('static',filename='img/uploads/' + item.file_img) }}"> -->
+              <!-- <img class="image activator" src="https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/i1.jpg"> -->
             </div>
             <div class="card-content">
               <span class="card-title activator grey-text text-darken-4">{{ item.item_name }} 

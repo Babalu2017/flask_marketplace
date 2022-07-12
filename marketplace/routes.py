@@ -1,7 +1,7 @@
-import os, boto3, json
+import os, boto3, json, botocore
 import uuid
 from flask import render_template, request, redirect, url_for, flash, session
-from marketplace import app, db
+from marketplace import S3_KEY, S3_SECRET, app, db, S3_BUCKET
 from marketplace.models import Category, Item, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -200,33 +200,16 @@ def allowed_file(filename):
 #     else:
 #         flash('Allowed image types are - png, jpg, jpeg, gif')
 #         return redirect(request.url)
-        
 
-@app.route('/sign_s3/')
-def sign_s3():
-  S3_BUCKET = os.environ.get('S3_BUCKET')
 
-  file_name = request.args.get('file_name')
-  file_type = request.args.get('file_type')
+s3 = boto3.resource('s3',
+         aws_access_key_id=S3_KEY,
+         aws_secret_access_key= S3_SECRET)
 
-  s3 = boto3.client('s3')
 
-  presigned_post = s3.generate_presigned_post(
-    Bucket = S3_BUCKET,
-    Key = file_name,
-    Fields = {"acl": "public-read", "Content-Type": file_type},
-    Conditions = [
-      {"acl": "public-read"},
-      {"Content-Type": file_type}
-    ],
-    ExpiresIn = 3600
-  )
-
-  return json.dumps({
-    'data': presigned_post,
-    'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
-  })
-
+s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/bac6c92a-01f4-11ed-8e50-acde48001122_post-2.jpg', 'flaskappmarketplace','post-2.jpg')
+s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/4cc6d31e-01f6-11ed-9627-acde48001122_story-bg.jpg', 'flaskappmarketplace','storu-bg.jpg')
+s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/5112c5a8-0111-11ed-8aa5-acde48001122_i1.jpg', 'flaskappmarketplace','i1.jpg')
 
 @app.route("/add_item", methods=["GET", "POST"])
 @login_required
@@ -241,16 +224,33 @@ def add_item():
     now = time.strftime("%Y-%m-%d %H:%M:%S")
    
     if request.method == "POST":
-        files = request.files.getlist('avatar-url')
+        
+
+        # files = request.files.getlist('files[]')
+        files = request.files['files']
+        print(type(files))
+        namefile = files.filename
         print(f'from add_item {files}')
-        for file in files:
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                unique_filename = str(uuid.uuid1()) + "_" + filename
-                # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+        # for file in files:
+        if files and allowed_file(files.filename):
+            filename = secure_filename(files.filename)
+
+            unique_filename = str(uuid.uuid1()) + "_" + filename
+            # save on s3
+            files.save(filename)
+            s3.meta.client.upload_file(
+                Bucket = S3_BUCKET,
+                Filename = filename,
+                Key = filename
+            )
+            
+            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # save file locally in img/uploads
+            # files.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+                
                 # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
             # print(file)
+                
             files = unique_filename   
             # print(files)
             # print(now)
@@ -262,7 +262,7 @@ def add_item():
             is_urgent=bool(True if request.form.get("is_urgent") else False),
             due_date=request.form.get("due_date"),
             category_id=request.form.get("category_id"),
-            file_img = unique_filename,
+            file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{namefile}",
             post_date = now,
             user_id=current_user.id
 
