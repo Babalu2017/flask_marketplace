@@ -1,4 +1,5 @@
 import os, json,boto3
+from collections.abc import Mapping
 import re
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
