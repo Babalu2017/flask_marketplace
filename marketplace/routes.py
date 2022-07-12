@@ -207,9 +207,9 @@ s3 = boto3.resource('s3',
          aws_secret_access_key= S3_SECRET)
 
 
-s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/bac6c92a-01f4-11ed-8e50-acde48001122_post-2.jpg', 'flaskappmarketplace','post-2.jpg')
-s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/4cc6d31e-01f6-11ed-9627-acde48001122_story-bg.jpg', 'flaskappmarketplace','storu-bg.jpg')
-s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/5112c5a8-0111-11ed-8aa5-acde48001122_i1.jpg', 'flaskappmarketplace','i1.jpg')
+# s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/bac6c92a-01f4-11ed-8e50-acde48001122_post-2.jpg', 'flaskappmarketplace','post-2.jpg')
+# s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/4cc6d31e-01f6-11ed-9627-acde48001122_story-bg.jpg', 'flaskappmarketplace','storu-bg.jpg')
+# s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/5112c5a8-0111-11ed-8aa5-acde48001122_i1.jpg', 'flaskappmarketplace','i1.jpg')
 
 @app.route("/add_item", methods=["GET", "POST"])
 @login_required
