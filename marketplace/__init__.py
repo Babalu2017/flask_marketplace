@@ -1,4 +1,4 @@
-import os
+import os, json,boto3
 import re
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -22,11 +22,7 @@ else:
 # S3_KEY = os.environ.get("S3_KEY")
 # S3_SECRET = os.environ.get("S3_SECRET")
 
-# s3 = boto3.client(
-#     's3',
-#     aws_access_key_id=S3_KEY,
-#     aws_secret_access_key=S3_SECRET
-# )
+
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)

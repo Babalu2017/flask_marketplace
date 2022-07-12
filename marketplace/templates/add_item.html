@@ -5,9 +5,16 @@
 
 
 <div class="row card-panel grey lighten-5">
+
+    <!-- add data/img -->
+    <input type="file" id="file_input" />
+    <p id="status">Please select a file</p>
+    <img id="preview" src="marketplace/static/img/uploads/large-default-product.jpeg" />
     <form class="col s12" method="POST" action="/" enctype="multipart/form-data">
         <!-- add data/img -->
-        <div class="file-field input-field">
+        <input type="hidden" id="avatar-url" name="avatar-url" value="marketplace/static/img/uploads/large-default-product.jpeg">
+
+        <!-- <div class="file-field input-field">
             <div class="btn">
               <span>File</span>
               <input type="file" name="files[]" id="fileInput" multiple>
@@ -15,7 +22,7 @@
             <div class="file-path-wrapper">
               <input class="file-path validate" type="text" placeholder="Upload one or more files">
             </div>
-        </div>
+        </div> -->
         <!-- item name -->
         <div class="row">
             <div class="input-field col s12">

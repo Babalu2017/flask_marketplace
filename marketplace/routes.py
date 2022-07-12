@@ -1,4 +1,4 @@
-import os
+import os, boto3, json
 import uuid
 from flask import render_template, request, redirect, url_for, flash, session
 from marketplace import app, db
@@ -11,6 +11,8 @@ import psycopg2
 import psycopg2.extras
 
 from flask_login import login_user, login_required, logout_user, current_user
+
+
 
 
 @app.route("/")
@@ -200,6 +202,31 @@ def allowed_file(filename):
 #         return redirect(request.url)
         
 
+@app.route('/sign_s3/')
+def sign_s3():
+  S3_BUCKET = os.environ.get('S3_BUCKET')
+
+  file_name = request.args.get('file_name')
+  file_type = request.args.get('file_type')
+
+  s3 = boto3.client('s3')
+
+  presigned_post = s3.generate_presigned_post(
+    Bucket = S3_BUCKET,
+    Key = file_name,
+    Fields = {"acl": "public-read", "Content-Type": file_type},
+    Conditions = [
+      {"acl": "public-read"},
+      {"Content-Type": file_type}
+    ],
+    ExpiresIn = 3600
+  )
+
+  return json.dumps({
+    'data': presigned_post,
+    'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
+  })
+
 
 @app.route("/add_item", methods=["GET", "POST"])
 @login_required
@@ -214,7 +241,7 @@ def add_item():
     now = time.strftime("%Y-%m-%d %H:%M:%S")
    
     if request.method == "POST":
-        files = request.files.getlist('files[]')
+        files = request.files.getlist('avatar-url')
         print(f'from add_item {files}')
         for file in files:
             if file and allowed_file(file.filename):
