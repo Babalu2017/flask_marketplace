@@ -1,6 +1,5 @@
 import os
 import re
-import boto3
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -19,15 +18,15 @@ else:
         uri = uri.replace("postgres://", "postgresql://", 1)
     app.config["SQLALCHEMY_DATABASE_URI"] = uri #heroku _database_
 
-S3_BUCKET = os.environ.get("S3_BUCKET")
-S3_KEY = os.environ.get("S3_KEY")
-S3_SECRET = os.environ.get("S3_SECRET")
+# S3_BUCKET = os.environ.get("S3_BUCKET")
+# S3_KEY = os.environ.get("S3_KEY")
+# S3_SECRET = os.environ.get("S3_SECRET")
 
-s3 = boto3.client(
-    's3',
-    aws_access_key_id=S3_KEY,
-    aws_secret_access_key=S3_SECRET
-)
+# s3 = boto3.client(
+#     's3',
+#     aws_access_key_id=S3_KEY,
+#     aws_secret_access_key=S3_SECRET
+# )
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
