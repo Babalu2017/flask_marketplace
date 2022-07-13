@@ -230,17 +230,20 @@ def add_item():
         # for file in files:
         if files and allowed_file(files.filename):
             filename = secure_filename(files.filename)
+            print(f"filename_secure: {filename}")
+            print(f"filename_secure: {type(filename)}")
+
 
             unique_filename = str(uuid.uuid1()) + "_" + filename
             # save on directory we need it to getsize filename
-            files.save(filename)
+            files.save(unique_filename)
             s3.meta.client.upload_file(
                 Bucket = S3_BUCKET,
-                Filename = filename,
-                Key = filename
+                Filename = unique_filename,
+                Key = unique_filename
             )
-            # after we getsize of filename we delete it from the directory
-            os.remove(filename)
+            # after we getsize of filename (function that works behind the scene) we delete it from the directory
+            os.remove(unique_filename)
             
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # save file locally in img/uploads
@@ -260,7 +263,7 @@ def add_item():
             is_urgent=bool(True if request.form.get("is_urgent") else False),
             due_date=request.form.get("due_date"),
             category_id=request.form.get("category_id"),
-            file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{namefile}",
+            file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}",
             post_date = now,
             user_id=current_user.id
 
@@ -282,27 +285,36 @@ def edit_item(any_item_id):
     categories = list(Category.query.order_by(Category.id).all())
     now = time.strftime("%Y-%m-%d %H:%M:%S")
 
-    files = request.files.getlist('files[]')
-
-    print(f'from edit_item: {files}')
-    for file in files:
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            unique_filename = str(uuid.uuid1()) + "_" + filename
-            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
-            # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
-        # print(file)
-        files = unique_filename 
 
     if request.method == "POST":
+        files = request.files['files']
+
+        print(f'from edit_item: {files}')
+        if files and allowed_file(files.filename):
+            filename = secure_filename(files.filename)
+            unique_filename = str(uuid.uuid1()) + "_" + filename
+            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+            # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
+        # print(file)
+        
+
+        files.save(unique_filename)
+        s3.meta.client.upload_file(
+            Bucket = S3_BUCKET,
+            Filename = unique_filename,
+            Key = unique_filename
+        )
+            # after we getsize of filename (function that works behind the scene) we delete it from the directory
+        os.remove(unique_filename)
+        files = unique_filename 
 
         item.item_name = request.form.get("item_name")
         item.item_description = request.form.get("item_description")
         item.is_urgent = bool(True if request.form.get("is_urgent") else False)
         item.due_date = request.form.get("due_date")
         item.category_id = request.form.get("category_id")
-        item.file_img = files
+        item.file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}"
         item.post_date = now
         item.user_id=current_user.id
         db.session.commit()
