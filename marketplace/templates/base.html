@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <title>Market Place</title>
+    <title>Towpath Marketplace</title>
 </head>
 
 <body>
@@ -30,11 +30,11 @@
         <nav class="light-blue darken-1">
             <div class="nav-wrapper">
                     <!-- <a href="{{ url_for('dashboard') }}" class="brand-logo" style="margin-left: 15px;">item Manager</a> -->
-                    <a href="{{ url_for('dashboard') }}" class="brand-logo" >Market Place</a>
+                    <a href="{{ url_for('dashboard') }}" class="brand-logo" >Towpath</a>
               
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
                 <ul class="right hide-on-med-and-down">
-                    <li><a href="{{ url_for('dashboard')}}">Dashboard</a></li>
+                    <li><a href="{{ url_for('dashboard')}}">Marketplace</a></li>
                     <li><a href="{{ url_for('home')}}">My items</a></li>
 
                     <!-- add item page With modal option -->
@@ -75,7 +75,7 @@
             </li>
         </ul>
         <ul class="sidenav" id="mobile-demo">
-            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('dashboard') }}">Marketplace</a></li>
             <li><a href="{{ url_for('home') }}">My items</a></li>
 
             <!-- add item page with modal -->
