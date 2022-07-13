@@ -21,16 +21,12 @@ def dashboard():
     current_user_id = current_user.id
     users = current_user.username
 
-    now = time.strftime("%d-%m-%Y %H:%M:%S")
-    new_time = now.split(" ")
-    date = new_time[0]
-    times = new_time[1]
 
     categories = list(Category.query.order_by(Category.id).all())
     itemFunc = list(Item.query.order_by(Item.id).all())
 
     return render_template("dashboard.html", 
-    itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id, date=date, times=times)
+    itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id)
 
 
 @app.route("/home")
@@ -236,19 +232,21 @@ def add_item():
             filename = secure_filename(files.filename)
 
             unique_filename = str(uuid.uuid1()) + "_" + filename
-            # save on s3
+            # save on directory we need it to getsize filename
             files.save(filename)
             s3.meta.client.upload_file(
                 Bucket = S3_BUCKET,
                 Filename = filename,
                 Key = filename
             )
+            # after we getsize of filename we delete it from the directory
+            os.remove(filename)
             
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # save file locally in img/uploads
             # files.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
                 
-                # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
+            # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
             # print(file)
                 
             files = unique_filename   
