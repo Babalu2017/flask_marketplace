@@ -1,5 +1,6 @@
 /* Sticky Footer */
 
+
 body {
   display: flex;
   min-height: 100vh;
@@ -50,6 +51,12 @@ select[required]{
   transform: translatey(-110%);
 }
 
+#dropdown-cat {
+  right: auto;
+  transform: translateY(-10%);
+
+}
+
 .millard {
   text-align: center;
 }
@@ -87,39 +94,7 @@ select[required]{
 
 @media (min-width:370px) {
 
-  /* btns in dashboard */
-  .cat-list {
-    margin: 0 auto;
-    padding-left: 15px;
-    display: flex;
-    justify-content: left;
-  }
-
-  .cat-icon {
-    margin: 0 auto;
-    padding-left: 1px;
-    padding:  0;
-    display: flex;
-  }
-
-  .cat-text {
-    margin: 0 auto;
-    display: flex;
-  }
-
-  .sell {
-    margin: 0 auto;
-    display: block;
-    padding-left: 15px;
-    display: flex;
-    justify-content: left;
-
-  }
-
-  .list-icon {
-    margin-left: 25px;
-  }
-
   
+
 
 }

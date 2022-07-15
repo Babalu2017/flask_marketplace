@@ -28,6 +28,29 @@ def dashboard():
     return render_template("dashboard.html", 
     itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id)
 
+@app.route("/filter_by")
+@login_required
+def filter_by():
+    current_user_id = current_user.id
+    users = current_user.username
+    categories = list(Category.query.order_by(Category.id).all())
+    
+    itemFunc = list(Item.query.order_by(Item.id).all())
+    choesen_cat = request.args.get('type')
+    filter_by_category_name = list(Category.query.order_by(Category.id).filter(Category.category_name == choesen_cat).all())
+    for id_cat in filter_by_category_name:
+        print(f"Here's your fucking id: {id_cat.id}")
+        
+    filter_by_category_id = list(Item.query.order_by(Item.id).filter(Item.category_id == id_cat.id).all())
+    print(f'here your category: {choesen_cat}')
+    print(filter_by_category_id)
+
+
+    return render_template("filter_by.html", 
+    itemFunc=itemFunc, categories = categories, filter_by_category_id=filter_by_category_id, users=users, current_user_id=current_user_id)
+
+
+
 
 @app.route("/home")
 @login_required
