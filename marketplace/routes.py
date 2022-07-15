@@ -14,7 +14,6 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 
 
-
 @app.route("/")
 @login_required
 def dashboard():
@@ -159,6 +158,7 @@ def categories(): #first function
 @app.route("/add_category", methods=["GET", "POST"])
 @login_required
 def add_category():
+    current_user_id = current_user.id
     users = current_user.username
     categories = list(Category.query.order_by(Category.id).all())
 
@@ -171,18 +171,19 @@ def add_category():
         db.session.add(category)
         db.session.commit()
         return redirect(url_for("categories"))
-    return render_template("add_category.html", users=users, categories=categories)
+    return render_template("add_category.html", users=users, categories=categories, current_user_id=current_user_id )
 
 @app.route("/edit_category/<int:any_name_category_id>", methods=["GET", "POST"])
 @login_required
 def edit_category(any_name_category_id):
+    current_user_id = current_user.id
     users = current_user.username
     categoryFunc = Category.query.get_or_404(any_name_category_id)
     if request.method == "POST":
         categoryFunc.category_name = request.form.get("category_name1") # category_name1 comes from edit_category templates input name="category_name1"
         db.session.commit()
         return redirect(url_for("categories")) #categories comes from the first function see top page line 12
-    return render_template("edit_category.html", categoryTemp=categoryFunc, users=users)
+    return render_template("edit_category.html", categoryTemp=categoryFunc, users=users, current_user_id=current_user_id)
 
 @app.route("/delete_category/<int:any_name_category_id>")
 @login_required

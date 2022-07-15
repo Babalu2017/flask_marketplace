@@ -44,16 +44,19 @@ select[required]{
   top: 0;
 }
 
+#dropdown1 {
+  position: relative;
+}
 
 #dropdown1, #dropdown2  {
   left: 0.5%;
   right: auto;
-  transform: translatey(-110%);
-}
+  transform: translatey(-50%);
+} 
 
 #dropdown-cat {
   right: auto;
-  transform: translateY(-10%);
+  transform: translateY(5%);
 
 }
 

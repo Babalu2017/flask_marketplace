@@ -7,9 +7,9 @@
         <a href="{{ url_for('add_item') }}"  class="light-blue darken-3 sell waves-effect waves-light btn"><i class="list-icon material-icons left">sell</i><span>Sell</span> </a>
     </div>
     <ul id="dropdown-cat" class="dropdown-content">
-        <li><a href="{{ url_for('dashboard') }}">All</a></li>
+        <li><a href="{{ url_for('dashboard') }}" style="color: darkblue;">All</a></li>
         {% for category in categories %}
-        <li><a href="{{ url_for('filter_by', type=category.category_name) }}">{{ category.category_name }}</a></li>
+        <li><a href="{{ url_for('filter_by', type=category.category_name) }}" style="color: darkblue;">{{ category.category_name }}</a></li>
         {% endfor %}
       </ul>
     <div class="col s12 m6 catogories-div center-align">

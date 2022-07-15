@@ -36,13 +36,13 @@
             </div>
         </div>
         <!-- due date -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-calendar-alt prefix light-blue-text text-darken-4"></i>
                 <input id="due_date" name="due_date" type="text" class="datepicker validate" required>
                 <label for="due_date">Due Date</label>
             </div>
-        </div>
+        </div> -->
         <!-- is urgent -->
         <div class="row">
             <div class="input-field col s12">
@@ -63,9 +63,10 @@
                 <select id="category_id" name="category_id" class="validate" required>
                     <option value="" disabled selected>Choose Category</option>
                     {% for category in categories %}
-                    {% if category.user_id == current_user_id %}
+                    <!-- {% if category.user_id == current_user_id %}
                     <option value="{{ category.id }}">{{ category.category_name }}</option>
-                    {% endif %}
+                    {% endif %} -->
+                    <option value="{{ category.id }}">{{ category.category_name }}</option>
                     {% endfor %}
                 </select>
                 <label for="category_id">Category</label>

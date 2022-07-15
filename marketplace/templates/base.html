@@ -11,7 +11,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
         type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Towpath Marketplace</title>
@@ -24,45 +24,30 @@
         <!-- dropdown content for user link -->
         <ul id="dropdown1" class="dropdown-content">
             <li>
-                <a href="{{ url_for('logout') }}">Logout</a>
+                <a href="#" style="color: darkblue;">Messages<i class="material-icons left" style="color: darkblue;">markunread</i></a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="{{ url_for('logout') }}" style="color: darkblue;">Logout <i class="material-icons left" style="color: darkblue;">exit_to_app</i></a>
             </li>
         </ul>
         <nav class="light-blue darken-1">
             <div class="nav-wrapper">
-                    <!-- <a href="{{ url_for('dashboard') }}" class="brand-logo" style="margin-left: 15px;">item Manager</a> -->
-                    <a href="{{ url_for('dashboard') }}" class="brand-logo" >Towpath</a>
-              
+                <a href="{{ url_for('dashboard') }}" class="brand-logo">Towpath</a>
+
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
                 <ul class="right hide-on-med-and-down">
                     <li><a href="{{ url_for('dashboard')}}">Marketplace</a></li>
                     <li><a href="{{ url_for('home')}}">My items</a></li>
 
-                    <!-- add item page With modal option -->
-                    <!-- {% if category_filter|length > 0 %}
-                    <li><a href="{{ url_for('add_item') }}">New item</a></li>
-                    {% else %}
-                    <li><a href="#modal3" class="modal-trigger">New item</a></li>
-                    {% endif %} -->
 
-                    <!-- Modal -->
-                    <!-- <div id="modal3" class="modal" style="overflow-y: hidden;">
-                        <div class="modal-content">
-                            <h5 class="black-text modal-item-test">Categories list is empty. You cannot add any items !
-                            </h5>
-                            <h5 class="red-text text-darken-2 modal-item-test">Would you like add one ?</h5>
-                        </div>
-                        <div class="modal-footer" style="margin-bottom: 25px;">
-                            <a href="{{ url_for('categories') }}" class="btn-small green accent-4">YES</a>
-                            <a href="{{ url_for('home') }}" class="btn-small red">NO</a>
-                        </div>
-                    </div> -->
-
+                    {% if current_user_id == 1%}
                     <li><a href="{{ url_for('categories') }}">Categories</a></li>
-                    
-                    
-                    <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{ users }}<i class="material-icons right">arrow_drop_down</i></a></li>
-                    
-                    <!-- <li><a href="{{ url_for('logout') }}">Logout</a></li> -->
+                    {% endif %}
+
+                    <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{ users }}<i
+                                class="material-icons right">arrow_drop_down</i></a></li>
+
                 </ul>
             </div>
         </nav>
@@ -71,37 +56,27 @@
         <!-- mobile dropdown content for user link -->
         <ul id="dropdown2" class="dropdown-content">
             <li>
-                <a href="{{ url_for('logout') }}">Logout</a>
+                <a href="#">Messages<i class="material-icons left">markunread</i></a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="{{ url_for('logout') }}">Logout<i class="material-icons left">exit_to_app</i></a>
             </li>
         </ul>
         <ul class="sidenav" id="mobile-demo">
             <li><a href="{{ url_for('dashboard') }}">Marketplace</a></li>
             <li><a href="{{ url_for('home') }}">My items</a></li>
 
-            <!-- add item page with modal -->
-            <!-- {% if category_filter|length > 0  %}
-                <li><a href="{{ url_for('add_item') }}">New item</a></li>
-            {% else %}
-                <li><a href="#modal2" class="modal-trigger">New item</a></li>
-            {% endif %} -->
+           
 
-            <!-- Modal -->
-            <!-- <div id="modal2" class="modal">
-                <div class="modal-content">
-                    <h5 class="black-text modal-item-test">Categories list is empty. You cannot add any items !</h5>
-                    <h5 class="red-text text-darken-2 modal-item-test">Would you like add one ?</h5>
-                </div>
-                <div class="modal-footer">
-                    <a href="{{ url_for('categories') }}" class="btn-small green accent-4">YES</a>
-                    <a href="{{ url_for('home') }}" class="btn-small red">NO</a>
-                </div>
-            </div> -->
-
+            {% if current_user_id == 1%}
             <li><a href="{{ url_for('categories') }}">Categories</a></li>
+            {% endif %}
 
-            <li id="current_user"><a class="dropdown-trigger" href="#!" data-target="dropdown2">{{ users }}<i class="material-icons right">arrow_drop_down</i></a></li>
 
-            <!-- <li><a href="{{ url_for('logout') }}">Logout</a></li> -->
+            <li id="current_user"><a class="dropdown-trigger" href="#!" data-target="dropdown2">{{ users }}<i
+                        class="material-icons right">arrow_drop_down</i></a></li>
+
         </ul>
     </header>
 
