@@ -20,28 +20,6 @@
         <a href="{{ url_for('add_item') }}" id="item_button" class="waves-effect btn-large light-blue darken-2">
             Add item <i class="fas fa-plus-square right"></i>
         </a>
-        <!-- {% if category_filter|length > 0 %}
-            <a href="{{ url_for('add_item') }}" id="item_button" class="waves-effect btn-large light-blue darken-2">
-                Add item <i class="fas fa-plus-square right"></i>
-            </a>
-        {% else %}
-            <a href="#modal" class="waves-effect waves-light btn-large light-blue darken-2 modal-trigger">Add item <i class="fas fa-plus-square right"></i></a>
-        {% endif %} -->
-        
-
-         <!-- Modal -->
-         <!-- <div id="modal" class="modal">
-            <div class="modal-content">
-                <h4>Categories list is empty. You cannot add any items !</h4>
-                <h4 class="red-text text-darken-2">Would you like add one ?</h4>
-            </div>
-            <div class="modal-footer">
-                <a href="{{ url_for('categories') }}"
-                    class="btn green accent-4">YES</a>
-            <a href="{{ url_for('home') }}" class="btn red">NO</a>
-            </div>
-        </div> -->
-
 
     </div>
 </div>
@@ -50,13 +28,6 @@
     {% for item in itemFunc|sort(attribute="due_date") %}
     {% if item.user_id == current_user_id %}
     <li>
-        <div class="collapsible-header white-text light-blue darken-4">
-            <i class="fas fa-caret-down"></i>
-            <strong>{{ item.item_name }}</strong> : {{item.due_date.strftime("%d %B, %Y")}}
-            {% if item.is_urgent == True %}
-            <i class="fas fa-exclamation-circle red-text text-lighten-2"></i>
-            {% endif %}
-        </div>
         <div class="collapsible-body">
             <strong>Category: {{ item.category.category_name }}</strong>
             <p> {{ item.item_description }}</p>
@@ -73,7 +44,6 @@
                 <div class="modal-footer">
                     <a href="{{ url_for('delete_item', any_item_id=item.id) }}" class="btn red">YES</a>
                     <a href="{{ url_for('home') }}" class="btn green accent-4">NO</a>
-
                 </div>
             </div>
         </div>
