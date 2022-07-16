@@ -43,7 +43,7 @@ class Category(db.Model):
 class Item(db.Model):
     # schema for the Item model
     id = db.Column(db.Integer, primary_key=True)
-    item_name = db.Column(db.String(50), unique=True, nullable=False)
+    item_name = db.Column(db.String(50), nullable=False)
     item_description = db.Column(db.Text, nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("category.id", ondelete="CASCADE"), nullable=False)
     file_img = db.Column(db.Text, unique=True, nullable=False)

@@ -25,9 +25,13 @@
 </div>
 
 <ul class="collapsible">
-    {% for item in itemFunc|sort(attribute="due_date") %}
+    {% for item in items %}
     {% if item.user_id == current_user_id %}
     <li>
+        <div class="collapsible-header white-text light-blue darken-4">
+            <i class="fas fa-caret-down"></i>
+            <strong>{{ item.item_name }}</strong>
+        </div>
         <div class="collapsible-body">
             <strong>Category: {{ item.category.category_name }}</strong>
             <p> {{ item.item_description }}</p>

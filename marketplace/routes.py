@@ -64,8 +64,8 @@ def home():
     categories = list(Category.query.order_by(Category.id).all())
     category_filter = list(Category.query.filter(Category.user_id == current_user_id))
 
-    itemFunc = list(Item.query.order_by(Item.id).all())
-    return render_template("items.html", category_filter=category_filter, itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id)
+    items = list(Item.query.order_by(Item.id).all())
+    return render_template("items.html", category_filter=category_filter, items=items, categories = categories, users=users, current_user_id=current_user_id)
 
 
 # Authentication
@@ -321,20 +321,18 @@ def edit_item(any_item_id):
         # print(file)
         
 
-        files.save(unique_filename)
-        s3.meta.client.upload_file(
-            Bucket = S3_BUCKET,
-            Filename = unique_filename,
-            Key = unique_filename
-        )
-            # after we getsize of filename (function that works behind the scene) we delete it from the directory
-        os.remove(unique_filename)
-        files = unique_filename 
+            files.save(unique_filename)
+            s3.meta.client.upload_file(
+                Bucket = S3_BUCKET,
+                Filename = unique_filename,
+                Key = unique_filename
+            )
+                # after we getsize of filename (function that works behind the scene) we delete it from the directory
+            os.remove(unique_filename)
+            files = unique_filename 
 
         item.item_name = request.form.get("item_name")
         item.item_description = request.form.get("item_description")
-        item.is_urgent = bool(True if request.form.get("is_urgent") else False)
-        item.due_date = request.form.get("due_date")
         item.category_id = request.form.get("category_id")
         item.file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}"
         item.post_date = now
