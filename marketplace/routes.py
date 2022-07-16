@@ -284,8 +284,6 @@ def add_item():
         item = Item(
             item_name=request.form.get("item_name"),
             item_description=request.form.get("item_description"),
-            is_urgent=bool(True if request.form.get("is_urgent") else False),
-            due_date=request.form.get("due_date"),
             category_id=request.form.get("category_id"),
             file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}",
             post_date = now,
