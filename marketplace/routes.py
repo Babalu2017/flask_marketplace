@@ -310,8 +310,8 @@ def edit_item(any_item_id):
 
     if request.method == "POST":
         files = request.files['files']
-
         print(f'from edit_item: {files}')
+
         if files and allowed_file(files.filename):
             filename = secure_filename(files.filename)
             unique_filename = str(uuid.uuid1()) + "_" + filename
@@ -329,12 +329,13 @@ def edit_item(any_item_id):
             )
                 # after we getsize of filename (function that works behind the scene) we delete it from the directory
             os.remove(unique_filename)
-            files = unique_filename 
+            files = unique_filename
+            item.file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}"
 
         item.item_name = request.form.get("item_name")
         item.item_description = request.form.get("item_description")
         item.category_id = request.form.get("category_id")
-        item.file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}"
+        # item.file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}"
         item.post_date = now
         item.user_id=current_user.id
         db.session.commit()
