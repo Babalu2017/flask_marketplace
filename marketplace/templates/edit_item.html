@@ -24,6 +24,15 @@
                 <label for="item_name">item Name</label>
             </div>
         </div>
+        <!-- location pickup -->
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="fa-solid fa-location-pin prefix light-blue-text text-darken-4"></i>
+                <input id="location_pickup" name="location_pickup" value="{{ item.location_pickup }}" minlength="5" maxlength="100" type="text" class="validate"
+                    required>
+                <label for="location_pickup">location pick up</label>
+            </div>
+        </div>
         <!-- item description -->
         <div class="row">
             <div class="input-field col s12">

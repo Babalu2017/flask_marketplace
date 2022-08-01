@@ -2,26 +2,37 @@
 {% block content %}
 
 <h3 class="custom-offset light-blue-text text-darken-4 left-align" style="margin-bottom: 45px;">Today's picks</h3>
-<div class="row custom-offset" >
-    <div class="col s6 m6 left-align sell-div" style="margin-bottom: 15px;">
-        <a href="{{ url_for('add_item') }}"  class="light-blue darken-3 sell waves-effect waves-light btn"><i class="list-icon material-icons left">sell</i><span>Sell</span> </a>     
-    </div>
-    <ul id="slide-out" class="sidenav sidenav-fixed sidenav-fixed-custom">
-        <li>
-          <a href="{{ url_for('add_item') }}"  class="light-blue darken-1 sell waves-effect waves-light btn" style="text-align: left; font-size: small; margin: 10px 5px;"><i class="white-text text-darken-2 list-icon material-icons left">add</i>Create new listing</a>
-        </li>
-        <li><a href="{{ url_for('dashboard') }}" style="color: darkblue; background-color: rgb(229, 228, 226);"><i class="fa-solid fa-store" style="color:#00008B;"></i>Browse all</a></li>
-        <li><a class="filter" style="color: darkblue;">Filters by Category</a></li>
-        
-        <li class="divider" style="margin-top: 0;"></li>
-        {% for category in categories %}
-        <li class="waves-effect"><a href="{{ url_for('filter_by', type=category.category_name) }}" style="color: darkblue;">{{ category.category_name }}</a></li>
-        <li class="divider"></li>
-        {% endfor %}
-      </ul>
-      <div class="col s6 m6 catogories-div left-align cat-div">
-          <a class="sidenav-trigger light-blue darken-3 categories-btn  waves-effect waves-light btn" data-target="slide-out">Category<i class="material-icons left">filter_list</i></a>       
-      </div>
+
+<!-- <div class="container">
+  <div>{{ mappa | safe }}</div>
+</div> -->
+
+<div class="row custom-offset">
+  <div class="col s6 m6 left-align sell-div" style="margin-bottom: 15px;">
+    <a href="{{ url_for('add_item') }}" class="light-blue darken-3 sell waves-effect waves-light btn"><i
+        class="list-icon material-icons left">sell</i><span>Sell</span> </a>
+  </div>
+  <ul id="slide-out" class="sidenav sidenav-fixed sidenav-fixed-custom">
+    <li>
+      <a href="{{ url_for('add_item') }}" class="light-blue darken-1 sell waves-effect waves-light btn"
+        style="text-align: left; font-size: small; margin: 10px 5px;"><i
+          class="white-text text-darken-2 list-icon material-icons left">add</i>Create new listing</a>
+    </li>
+    <li><a href="{{ url_for('dashboard') }}" style="color: darkblue; background-color: rgb(229, 228, 226);"><i
+          class="fa-solid fa-store" style="color:#00008B;"></i>Browse all</a></li>
+    <li><a class="filter" style="color: darkblue;">Filters by Category</a></li>
+
+    <li class="divider" style="margin-top: 0;"></li>
+    {% for category in categories %}
+    <li class="waves-effect"><a href="{{ url_for('filter_by', type=category.category_name) }}"
+        style="color: darkblue;">{{ category.category_name }}</a></li>
+    <li class="divider"></li>
+    {% endfor %}
+  </ul>
+  <div class="col s6 m6 catogories-div left-align cat-div">
+    <a class="sidenav-trigger light-blue darken-3 categories-btn  waves-effect waves-light btn"
+      data-target="slide-out">Category<i class="material-icons left">filter_list</i></a>
+  </div>
 </div>
 <!-- <div class="row">
   <div class="col s12 catogories-div center-align">
@@ -32,30 +43,35 @@
 </div> -->
 
 <div class="row custom-offset">
-    {% for item in itemFunc|sort(attribute="post_date") %}
-    <div class="col s12 m6">
-        <div class="card">
-            <div class="card-image card-img-top waves-effect waves-block waves-light">
-            <img class="image activator" src="{{ item.file_img }}">
+  {% for item in itemFunc|sort(attribute="post_date") %}
+  <div class="col s12 m6">
+    <div class="card">
+      <div class="card-image card-img-top waves-effect waves-block waves-light">
+        <img class="image activator" src="{{ item.file_img }}">
 
-              <!-- <img class="image activator" src="{{ url_for('static',filename='img/uploads/' + item.file_img) }}"> -->
-              <!-- <img class="image activator" src="https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/i1.jpg"> -->
-            </div>
-            <div class="card-content">
-              <span class="card-title activator grey-text text-darken-4">{{ item.item_name }} 
-                <i class="material-icons right">more_vert</i></span>
-              <!-- <p><a href="#">This is a link</a></p> -->
-              <p><strong>User: </strong>{{ item.user.username}}</p>
-              <p>Listed on: {{ item.post_date }}</p>
+        <!-- <img class="image activator" src="{{ url_for('static',filename='img/uploads/' + item.file_img) }}"> -->
+        <!-- <img class="image activator" src="https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/i1.jpg"> -->
+      </div>
+      <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">{{ item.item_name }}
+          <i class="material-icons right">more_vert</i></span>
+        <!-- <p><a href="#">This is a link</a></p> -->
+        <p><strong>User: </strong>{{ item.user.username}}</p>
+        <p>Listed on: {{ item.post_date }}</p>
 
-            </div>
-            <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">{{ item.item_name }}<i class="material-icons right">close</i></span>
-            <p>Description: {{ item.item_description }}</p>
-            </div>
-          </div>
+      </div>
+      <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">{{ item.item_name }}<i
+            class="material-icons right">close</i></span>
+            <!-- <p>{{ item.location_pickup }}</p> -->
+            <div>{{ folium_map(item.location_pickup) | safe }}</div>
+            <!-- <p>{{item.location_pickup}}</p> -->
+        <p>Description: {{ item.item_description }}</p>
+      </div>
     </div>
-    {% endfor %}
+  </div>
+  {% endfor %}
 </div>
+
 
 {% endblock %}

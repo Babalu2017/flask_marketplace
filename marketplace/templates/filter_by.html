@@ -57,6 +57,8 @@
       <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">{{ item.item_name }}<i
             class="material-icons right">close</i></span>
+            <div>{{ item.location_pickup | safe }}</div>
+            <!-- <div>{{ mappa | safe }}</div> -->
         <p>Description: {{ item.item_description }}</p>
       </div>
     </div>

@@ -45,6 +45,7 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_name = db.Column(db.String(50), nullable=False)
     item_description = db.Column(db.Text, nullable=False)
+    location_pickup = db.Column(db.String(100), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("category.id", ondelete="CASCADE"), nullable=False)
     file_img = db.Column(db.Text, unique=True, nullable=False)
     post_date = db.Column(db.DateTime, nullable=False)

@@ -1,18 +1,93 @@
-import os, boto3, json, botocore
+import os
+import boto3
 import uuid
 from flask import render_template, request, redirect, url_for, flash, session
+from idna import check_initial_combiner
+from sqlalchemy import false
 from marketplace import S3_KEY, S3_SECRET, app, db, S3_BUCKET
 from marketplace.models import Category, Item, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-import urllib.request
+import requests
+import urllib.parse
 import time
-import psycopg2
-import psycopg2.extras
+import folium
 
 from flask_login import login_user, login_required, logout_user, current_user
 
 
+@app.context_processor
+def utility_processor():
+    def folium_map(loc_address):
+        url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(loc_address) +'?format=json'
+        response = requests.get(url).json()
+        # print(*(d['lat'] for d in response))
+        lat = list(d['lat'] for d in response)
+        lon = list(d['lon'] for d in response)
+        # print(response)
+        # print(str(lat[0]))
+        # print(str(lon[0]))
+        coords = [str(lat[0]), str(lon[0])]
+        # print(coords)
+        # item_coords = [response["lat"],response["lon"]]
+        # print(item_coords)
+        mapA = folium.Map(
+                    location=["51.5072","0.1276"], zoom_start=8, max_zoom=12 ,  tiles="Stamen Terrain"
+                )
+        # print(mapA)
+        london = folium.map.FeatureGroup()
+        london.add_child(folium.CircleMarker(location=coords, radius = 15, color='#00BFFF',
+                fill_color='#CD5C5C'))
+        london_mrk = mapA.add_child(london)
+        # print(london_mrk._repr_html_())
+        return london_mrk._repr_html_()
+    return dict(folium_map=folium_map)
+    
+    
+
+
+
+    # millard99 = [float(response[0]["lat"]), float(response[0]["lon"])]
+
+    # print(millard99)
+    # print(response[0]["lat"])
+    # print(response[0]["lon"])
+
+    # london_location = millard99
+    # mapA = folium.Map(
+    #         location=london_location, zoom_start=8, tiles="Stamen Terrain"
+    #     )
+
+    # london = folium.map.FeatureGroup()
+    # london.add_child(folium.CircleMarker(location=[51.4877, -0.0319], radius = 20, color='#00BFFF',
+    #     fill_color='#CD5C5C'))
+    # london_mrk = mapA.add_child(london)
+    # london_mrk._repr_html_()
+
+
+# address = '99 millard road, London'
+# url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
+
+# response = requests.get(url).json()
+# millard99 = [float(response[0]["lat"]), float(response[0]["lon"])]
+
+# print(millard99)
+# print(response[0]["lat"])
+# print(response[0]["lon"])
+# # folium map
+
+# london_location = millard99
+# mapA = folium.Map(
+#         location=london_location, zoom_start=8, tiles="Stamen Terrain"
+#     )
+
+# london = folium.map.FeatureGroup()
+# london.add_child(folium.CircleMarker(location=[51.4877, -0.0319], radius = 20, color='#00BFFF',
+#     fill_color='#CD5C5C'))
+# london_mrk = mapA.add_child(london)
+# london_mrk._repr_html_()
+
+# print(type(london_mrk._repr_html_()))
 
 @app.route("/")
 @login_required
@@ -20,12 +95,28 @@ def dashboard():
     current_user_id = current_user.id
     users = current_user.username
 
-
     categories = list(Category.query.order_by(Category.id).all())
     itemFunc = list(Item.query.order_by(Item.id).all())
+    
+    # return render_template("dashboard.html",
+    #                        itemFunc=itemFunc, mappa=london_mrk._repr_html_(), categories=categories, users=users, current_user_id=current_user_id)
 
-    return render_template("dashboard.html", 
-    itemFunc=itemFunc, categories = categories, users=users, current_user_id=current_user_id)
+    return render_template("dashboard.html",
+                           itemFunc=itemFunc, categories=categories, users=users, current_user_id=current_user_id)
+
+
+
+# @app.route("/map_dashboard")
+# def map_dashboard():
+#     current_user_id = current_user.id
+#     users = current_user.username
+
+#     categories = list(Category.query.order_by(Category.id).all())
+#     itemFunc = list(Item.query.order_by(Item.id).all())
+#     # creating a map
+    
+#     return render_template("dashboard.html", mappa=mapA._repr_html_(), itemFunc=itemFunc, categories=categories, users=users, current_user_id=current_user_id)
+
 
 @app.route("/filter_by")
 @login_required
@@ -33,22 +124,23 @@ def filter_by():
     current_user_id = current_user.id
     users = current_user.username
     categories = list(Category.query.order_by(Category.id).all())
-    
+
     itemFunc = list(Item.query.order_by(Item.id).all())
     choesen_cat = request.args.get('type')
-    filter_by_category_name = list(Category.query.order_by(Category.id).filter(Category.category_name == choesen_cat).all())
+    filter_by_category_name = list(Category.query.order_by(
+        Category.id).filter(Category.category_name == choesen_cat).all())
     for id_cat in filter_by_category_name:
         print(f"Here's your fucking id: {id_cat.id}")
-        
-    filter_by_category_id = list(Item.query.order_by(Item.id).filter(Item.category_id == id_cat.id).all())
+
+    filter_by_category_id = list(Item.query.order_by(
+        Item.id).filter(Item.category_id == id_cat.id).all())
     print(f'here your category: {choesen_cat}')
     print(filter_by_category_id)
 
-
-    return render_template("filter_by.html", 
-    itemFunc=itemFunc, categories = categories, filter_by_category_id=filter_by_category_id, users=users, current_user_id=current_user_id)
-
-
+    # return render_template("filter_by.html",
+    #                        itemFunc=itemFunc, mappa=london_mrk._repr_html_(), categories=categories, filter_by_category_id=filter_by_category_id, users=users, current_user_id=current_user_id)
+    return render_template("filter_by.html",
+                           itemFunc=itemFunc, categories=categories, filter_by_category_id=filter_by_category_id, users=users, current_user_id=current_user_id)
 
 
 @app.route("/home")
@@ -60,12 +152,13 @@ def home():
     # print(f"here: {current_user.id}")
 
     # users = list(User.query.order_by(User.id))
-    # categories = list(Category.query.order_by(Category.category_name).all())  
+    # categories = list(Category.query.order_by(Category.category_name).all())
     categories = list(Category.query.order_by(Category.id).all())
-    category_filter = list(Category.query.filter(Category.user_id == current_user_id))
+    category_filter = list(Category.query.filter(
+        Category.user_id == current_user_id))
 
     items = list(Item.query.order_by(Item.id).all())
-    return render_template("items.html", category_filter=category_filter, items=items, categories = categories, users=users, current_user_id=current_user_id)
+    return render_template("items.html", category_filter=category_filter, items=items, categories=categories, users=users, current_user_id=current_user_id)
 
 
 # Authentication
@@ -77,8 +170,6 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
-
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -92,12 +183,14 @@ def login():
             flash('Email does not exist.', category='error_login')
     return render_template("login.html", users=users)
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("login"))
     # return render_template("login.html")
+
 
 @app.route('/sign-up', methods=["GET", "POST"])
 def sign_up():
@@ -106,10 +199,10 @@ def sign_up():
         username = request.form.get('username')
         password = request.form.get('password')
         password1 = request.form.get('password2')
-    
+
         user_email = User.query.filter_by(email=email).first()
-        user_name = User.query.filter_by(username=username).first()         
-            
+        user_name = User.query.filter_by(username=username).first()
+
         if user_email:
             flash('Email already exists !', category='error')
         elif len(username) < 5:
@@ -123,7 +216,8 @@ def sign_up():
         elif len(password) < 5:
             flash('Password must contain at least 5 characters', category='error')
         else:
-            new_user = User(username=username, email=email, password=generate_password_hash(password, method='sha256'))
+            new_user = User(username=username, email=email, password=generate_password_hash(
+                password, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
@@ -134,9 +228,10 @@ def sign_up():
     return render_template("sign_up.html")
 # End Auth
 
+
 @app.route("/categories")
 @login_required
-def categories(): #first function
+def categories():  # first function
     print(f"here: {current_user.username}")
     print(f"here: {current_user.id}")
     current_user_id = current_user.id
@@ -146,13 +241,15 @@ def categories(): #first function
     # users = list(User.query.order_by(User.id).all())
     # categories = list(Category.query.order_by(Category.category_name).all())
     categories = list(Category.query.order_by(Category.id).all())
-    category_filter = list(Category.query.filter(Category.user_id == current_user_id))
+    category_filter = list(Category.query.filter(
+        Category.user_id == current_user_id))
     # print(f"category filtered by user_id: {category_filter[-1].user_id}")
     print(f"category filtered by user_id: {category_filter}")
 
     # print(f"user_id: {categories}")
 
-    return render_template("categories.html", category_filter=category_filter, categories = categories, users=users, itemFunc=itemFunc, current_user_id=current_user_id) # the first categories(FIRST:categories = SECOND:categories) will be usend inside the html template with jinja notation{{%%}}.The second is the name variable that grab all the categories from the database. It's a list so it can be iterated with a for loop
+    # the first categories(FIRST:categories = SECOND:categories) will be usend inside the html template with jinja notation{{%%}}.The second is the name variable that grab all the categories from the database. It's a list so it can be iterated with a for loop
+    return render_template("categories.html", category_filter=category_filter, categories=categories, users=users, itemFunc=itemFunc, current_user_id=current_user_id)
 
 
 @app.route("/add_category", methods=["GET", "POST"])
@@ -171,7 +268,8 @@ def add_category():
         db.session.add(category)
         db.session.commit()
         return redirect(url_for("categories"))
-    return render_template("add_category.html", users=users, categories=categories, current_user_id=current_user_id )
+    return render_template("add_category.html", users=users, categories=categories, current_user_id=current_user_id)
+
 
 @app.route("/edit_category/<int:any_name_category_id>", methods=["GET", "POST"])
 @login_required
@@ -180,10 +278,13 @@ def edit_category(any_name_category_id):
     users = current_user.username
     categoryFunc = Category.query.get_or_404(any_name_category_id)
     if request.method == "POST":
-        categoryFunc.category_name = request.form.get("category_name1") # category_name1 comes from edit_category templates input name="category_name1"
+        # category_name1 comes from edit_category templates input name="category_name1"
+        categoryFunc.category_name = request.form.get("category_name1")
         db.session.commit()
-        return redirect(url_for("categories")) #categories comes from the first function see top page line 12
+        # categories comes from the first function see top page line 12
+        return redirect(url_for("categories"))
     return render_template("edit_category.html", categoryTemp=categoryFunc, users=users, current_user_id=current_user_id)
+
 
 @app.route("/delete_category/<int:any_name_category_id>")
 @login_required
@@ -191,12 +292,15 @@ def delete_category(any_name_category_id):
     categoryFunc = Category.query.get_or_404(any_name_category_id)
     db.session.delete(categoryFunc)
     db.session.commit()
-    return redirect(url_for("categories")) #categories comes from the first function see top page line 12
+    # categories comes from the first function see top page line 12
+    return redirect(url_for("categories"))
+
 
 app.config['UPLOAD_FOLDER'] = "/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads"
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-ALLOWED_EXTENSIONS = set(['png','jpg','jpeg','gif'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -223,8 +327,8 @@ def allowed_file(filename):
 
 
 s3 = boto3.resource('s3',
-         aws_access_key_id=S3_KEY,
-         aws_secret_access_key= S3_SECRET)
+                    aws_access_key_id=S3_KEY,
+                    aws_secret_access_key=S3_SECRET)
 
 
 # s3.meta.client.upload_file('/Users/francescomiranda/Desktop/flask_market_place/marketplace/static/img/uploads/bac6c92a-01f4-11ed-8e50-acde48001122_post-2.jpg', 'flaskappmarketplace','post-2.jpg')
@@ -242,9 +346,8 @@ def add_item():
 
     # now = datetime.now().date()
     now = time.strftime("%Y-%m-%d %H:%M:%S")
-   
+
     if request.method == "POST":
-        
 
         # files = request.files.getlist('files[]')
         files = request.files['files']
@@ -257,45 +360,47 @@ def add_item():
             print(f"filename_secure: {filename}")
             print(f"filename_secure: {type(filename)}")
 
-
             unique_filename = str(uuid.uuid1()) + "_" + filename
             # save on directory we need it to getsize filename
             files.save(unique_filename)
             s3.meta.client.upload_file(
-                Bucket = S3_BUCKET,
-                Filename = unique_filename,
-                Key = unique_filename
+                Bucket=S3_BUCKET,
+                Filename=unique_filename,
+                Key=unique_filename
             )
             # after we getsize of filename (function that works behind the scene) we delete it from the directory
             os.remove(unique_filename)
-            
+
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # save file locally in img/uploads
             # files.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
-                
+
             # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
             # print(file)
-                
-            files = unique_filename   
+
+            files = unique_filename
             # print(files)
             # print(now)
         flash('File(s) successfully uploaded')
 
+        
+
         item = Item(
             item_name=request.form.get("item_name"),
             item_description=request.form.get("item_description"),
+            location_pickup=request.form.get("location_pickup"),
             category_id=request.form.get("category_id"),
-            file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}",
-            post_date = now,
+            file_img=f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}",
+            post_date=now,
             user_id=current_user.id
 
         )
-        
+
         db.session.add(item)
         db.session.commit()
         return redirect(url_for("home"))
-    return render_template("add_item.html", categories=categories, users=users, current_user_id=current_user_id )
-
+    
+    return render_template("add_item.html", categories=categories, users=users, current_user_id=current_user_id)
 
 
 @app.route("/edit_item/<int:any_item_id>", methods=["GET", "POST"])
@@ -306,7 +411,6 @@ def edit_item(any_item_id):
     # categories = list(Category.query.order_by(Category.category_name).all())
     categories = list(Category.query.order_by(Category.id).all())
     now = time.strftime("%Y-%m-%d %H:%M:%S")
-
 
     if request.method == "POST":
         files = request.files['files']
@@ -319,25 +423,25 @@ def edit_item(any_item_id):
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
             # to_binary_file = ' '.join(map(bin,bytearray(unique_filename,'utf8')))
         # print(file)
-        
 
             files.save(unique_filename)
             s3.meta.client.upload_file(
-                Bucket = S3_BUCKET,
-                Filename = unique_filename,
-                Key = unique_filename
+                Bucket=S3_BUCKET,
+                Filename=unique_filename,
+                Key=unique_filename
             )
-                # after we getsize of filename (function that works behind the scene) we delete it from the directory
+            # after we getsize of filename (function that works behind the scene) we delete it from the directory
             os.remove(unique_filename)
             files = unique_filename
             item.file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}"
 
         item.item_name = request.form.get("item_name")
         item.item_description = request.form.get("item_description")
+        item.location_pickup = request.form.get("location_pickup")
         item.category_id = request.form.get("category_id")
         # item.file_img = f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}"
         item.post_date = now
-        item.user_id=current_user.id
+        item.user_id = current_user.id
         db.session.commit()
         return redirect(url_for("home"))
     return render_template("edit_item.html", item=item, categories=categories, users=users)
@@ -349,8 +453,5 @@ def delete_item(any_item_id):
     itemFunc = Item.query.get_or_404(any_item_id)
     db.session.delete(itemFunc)
     db.session.commit()
-    return redirect(url_for("home")) #home comes from the first function see top page line 8
-
-
-
-
+    # home comes from the first function see top page line 8
+    return redirect(url_for("home"))
