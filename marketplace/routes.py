@@ -1,9 +1,6 @@
-import os
-import boto3
+import os, boto3, json, botocore
 import uuid
 from flask import render_template, request, redirect, url_for, flash, session
-from idna import check_initial_combiner
-from sqlalchemy import false
 from marketplace import S3_KEY, S3_SECRET, app, db, S3_BUCKET
 from marketplace.models import Category, Item, User
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,6 +8,8 @@ from werkzeug.utils import secure_filename
 import requests
 import urllib.parse
 import time
+import psycopg2
+import psycopg2.extras
 import folium
 
 from flask_login import login_user, login_required, logout_user, current_user

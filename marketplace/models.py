@@ -1,4 +1,3 @@
-from enum import unique
 from marketplace import db, login_manager
 from flask_login import UserMixin
 
