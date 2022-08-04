@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="light-blue-text text-darken-4 center-align">Inbox</h3>
+
+<div class="row">
+    <div class="col s12 center-align">
+        <a href="{{ url_for('new_msg') }}" id="" class="waves-effect btn-large light-blue darken-2" style="margin-bottom: 10px;"> New Message <i class="fa-regular fa-envelope right"></i>
+        </a>
+        <a href="#" id="" class="waves-effect btn-large red darken-2" style="margin-bottom: 10px;"> Delete <i class="fa-regular fa-trash-can right"></i>
+        </a>
+    </div>
+</div>
+
+<form action="#">
+    <ul>
+        <li class="valign-wrapper #e3f2fd blue lighten-5" style="padding-left: 10px; height: 40px">
+            <div>
+                <p>
+                    <label>
+                        <input type="checkbox" class="filled-in" />
+                        <span style="color: black;">User</span>
+                        <span style="padding-left: 5px; color: black;">|</span> 
+                        <a href="{{ url_for('read_msg') }}" style="padding-left: 5px; color: black;">Subject</a>
+                    </label>
+                </p>
+            </div>
+        </li>
+    </ul>
+</form>
+
+{% endblock %}

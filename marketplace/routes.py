@@ -454,3 +454,21 @@ def delete_item(any_item_id):
     db.session.commit()
     # home comes from the first function see top page line 8
     return redirect(url_for("home"))
+
+
+@app.route("/inbox")
+@login_required
+def inbox():
+    return render_template("msgs_box.html")
+
+
+@app.route("/read_message")
+@login_required
+def read_msg():
+    return render_template("read_msg.html")
+
+
+@app.route("/new_message")
+@login_required
+def new_msg():
+    return render_template("new_message.html")

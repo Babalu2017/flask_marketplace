@@ -28,7 +28,7 @@
         <!-- dropdown content for user link -->
         <ul id="dropdown1" class="dropdown-content">
             <li>
-                <a href="#" style="color: darkblue;">Messages<i class="material-icons left"
+                <a href="{{ url_for('inbox') }}" style="color: darkblue;">Messages<i class="material-icons left"
                         style="color: darkblue;">markunread</i></a>
             </li>
             <li class="divider"></li>
@@ -68,7 +68,7 @@
         <!-- mobile dropdown content for user link -->
         <ul id="dropdown2" class="dropdown-content">
             <li>
-                <a href="#">Messages<i class="material-icons left">markunread</i></a>
+                <a href="{{ url_for('inbox') }}">Messages<i class="material-icons left">markunread</i></a>
             </li>
             <li class="divider"></li>
             <li>
