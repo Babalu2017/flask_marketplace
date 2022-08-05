@@ -1,8 +1,9 @@
+from email import message
 import os, boto3, json, botocore
 import uuid
 from flask import render_template, request, redirect, url_for, flash, session
 from marketplace import S3_KEY, S3_SECRET, app, db, S3_BUCKET
-from marketplace.models import Category, Item, User
+from marketplace.models import Category, Item, Message, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import requests
@@ -459,16 +460,48 @@ def delete_item(any_item_id):
 @app.route("/inbox")
 @login_required
 def inbox():
-    return render_template("msgs_box.html")
+    users_list = list(User.query.order_by(User.id).all())
+    messages_list = list(Message.query.order_by(Message.id).all())
+    current_user_id = current_user.id
+    users = current_user.username
+    return render_template("msgs_box.html", current_user_id=current_user_id, users=users, messages_list=messages_list, users_list=users_list )
 
 
-@app.route("/read_message")
+@app.route("/read_message/<int:any_message_id>")
 @login_required
-def read_msg():
-    return render_template("read_msg.html")
+def read_msg(any_message_id):
+    users_list = list(User.query.order_by(User.id).all())
+    read_message = Message.query.get_or_404(any_message_id)
+    users = current_user.username
+    return render_template("read_msg.html", users=users, read_message=read_message, users_list=users_list)
 
 
-@app.route("/new_message")
+@app.route("/new_message", methods=["GET", "POST"])
 @login_required
 def new_msg():
-    return render_template("new_message.html")
+    users_list = list(User.query.order_by(User.id).all())
+    current_user_id = current_user.id
+    users = current_user.username
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+
+    if request.method == "POST":
+
+        message = Message(
+            subject=request.form.get("subject"),
+            message=request.form.get("message"),
+            msg_date=now,
+            sender_id=current_user_id,
+            recipient_id=request.form.get("recipient_id")
+        )
+
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for("inbox"))
+    return render_template("new_message.html", users=users, users_list=users_list)
+
+
+@app.route("/replay_to_msg")
+@login_required
+def replay_to_msg():
+    users = current_user.username
+    return render_template("replay_to_msg.html", users=users)
