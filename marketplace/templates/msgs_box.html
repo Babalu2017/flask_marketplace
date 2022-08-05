@@ -14,18 +14,26 @@
 
 <form action="#">
     <ul>
+        {% for message in messages_list %}
+        {% if message.recipient_id == current_user_id %}
         <li class="valign-wrapper #e3f2fd blue lighten-5" style="padding-left: 10px; height: 40px">
             <div>
                 <p>
                     <label>
                         <input type="checkbox" class="filled-in" />
-                        <span style="color: black;">User</span>
+                        {% for user in users_list %}
+                        {% if user.id == message.sender_id %}
+                        <span style="color: black;"> {{ user.username }}</span>
+                        {% endif %}
+                        {% endfor %}
                         <span style="padding-left: 5px; color: black;">|</span> 
-                        <a href="{{ url_for('read_msg') }}" style="padding-left: 5px; color: black;">Subject</a>
+                        <a href="{{ url_for('read_msg', any_message_id=message.id) }}" style="padding-left: 5px; color: black;"> {{ message.subject }}</a>
                     </label>
                 </p>
             </div>
         </li>
+        {% endif %}
+        {% endfor %}
     </ul>
 </form>
 

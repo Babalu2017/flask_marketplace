@@ -5,9 +5,8 @@
 <h3 class="light-blue-text text-darken-4 center-align">Send Message</h3>
 
 <div class="row" style="margin-top: 50px;">
-    <div class="col s12 valign-wrapper">
-        <span style="color: #03a9f4;"><i class="fa-2x fa-solid fa-circle-left"></i></span>
-        <a href="{{ url_for('inbox') }}" style="margin-left: 10px;"> Back to Inbox </a>
+    <div class="col s12" style="position: relative;">
+        <a href="{{ url_for('inbox') }}"> <span style="color: #03a9f4; margin-right: 10px;"><i class="fa-2x fa-solid fa-circle-left"></i></span><span style="position: absolute; margin-top: 5px;">Back to Inbox</span></a>
     </div> 
 </div>
 
@@ -17,14 +16,13 @@
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix light-blue-text text-darken-4">account_circle</i>
-                <!-- <i class="fas fa-folder-open prefix light-blue-text text-darken-4"></i> -->
-                <select id="user_id" name="user_id" class="validate" required>
+                <select id="recipient_id" name="recipient_id" class="validate" required>
                     <option value="" disabled selected>Send to</option>
-                    <!-- for loop -->
-                    <option value="">user_name </option>
-                    <!-- end for loop -->
+                    {% for user in users_list %}
+                    <option value=" {{ user.id }} ">  {{ user.username }}  </option>
+                    {% endfor %}
                 </select>
-                <label for="user_id">User</label>
+                <label for="recipient_id">User</label>
             </div>
         </div>
         <!-- subject -->
@@ -42,7 +40,7 @@
             <div class="input-field col s12">
                 <i class="material-icons prefix light-blue-text text-darken-4">mode_edit</i>
                 <!-- <i class="fas fa-align-left prefix light-blue-text text-darken-4"></i> -->
-                <textarea id="message" name="message" minlength="5" maxlength="200" type="text"
+                <textarea id="message" name="message" minlength="5" maxlength="250" type="text"
                     class="materialize-textarea validate" required></textarea>
                 <label for="message">Message</label>
             </div>
