@@ -1,3 +1,4 @@
+from email import message
 from marketplace import db, login_manager
 from flask_login import UserMixin
 
@@ -14,6 +15,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150), nullable=False)
     categories = db.relationship("Category", backref='user',cascade="all, delete", lazy=True)
     items = db.relationship("Item", backref="user", cascade="all, delete", lazy=True)
+    message = db.relationship("Message", backref="user", cascade="all, delete", lazy=True)
+
 
     def __repr__(self):
         # return '<User %r>' % self.id, self.username
@@ -56,5 +59,21 @@ class Item(db.Model):
         return "#{0} - Item: {1}".format(
             self.id, self.item_name
         )
+
+
+class Message(db.Model):
+    # schema for Message model
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.Text, nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    msg_date = db.Column(db.DateTime, nullable=False)
+    sender_id = db.Column(db.Integer, nullable=False)
+    recipient_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)    
+
+    def __repr__(self):
+        return "#{0} - Message: {1} | Sender_id: {2} | Recipient_id: {3}".format(
+            self.id, self.message, self.sender_id, self.recipient_id
+        )
+
     
 
