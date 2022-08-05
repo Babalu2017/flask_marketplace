@@ -1,25 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="row" style="margin-top: 100px;">
-    <div class="col s12 valign-wrapper">
-        <span style="color: #03a9f4;"><i class="fa-2x fa-solid fa-circle-left"></i></span>
-        <a href="{{ url_for('inbox') }}" style="margin-left: 10px;"> Back to Inbox </a>
-    </div> 
+<div class="row" style="margin-top: 50px;">
+  <div class="col s12" style="position: relative;">
+      <a href="{{ url_for('inbox') }}"> <span style="color: #03a9f4; margin-right: 10px;"><i class="fa-2x fa-solid fa-circle-left"></i></span><span style="position: absolute; margin-top: 5px;">Back to Inbox</span></a>
+  </div> 
 </div>
 <div class="row">
+  
     <div class="col s12">
       <div class="card light-blue darken-4">
         <div class="card-content white-text">
-          <span class="card-title">Subject</span>
-          <span>From User to me</span>
+          <span class="card-title">{{ read_message.subject }}</span>
+          {% for user in users_list %}
+          {% if user.id == read_message.sender_id  %}
+          <span>From {{ user.username }} to me</span>
+          {% endif %}
+          {% endfor %}
           <div class="card-content white light-blue-text text-darken-4 center-align" style="margin-top: 10px;">
-            <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
+            <p>{{ read_message.message }}</p>
           </div>
         </div>
         <div class="card-action center-align">
-          <a href="#" class="waves-effect btn green darken-2" style="margin-bottom: 10px; margin-right: 5px;">Replay <i class="fa-solid fa-reply"></i></a>
+          <a href="{{ url_for('replay_to_msg') }}" class="waves-effect btn green darken-2" style="margin-bottom: 10px; margin-right: 5px;">Replay <i class="fa-solid fa-reply"></i></a>
           <a href="#" class="waves-effect btn red darken-2" style="margin-bottom: 10px;">Delete <i class="fa-regular fa-trash-can right"></i></a>
         </div>
       </div>
