@@ -22,8 +22,8 @@
           </div>
         </div>
         <div class="card-action center-align">
-          <a href="{{ url_for('replay_to_msg') }}" class="waves-effect btn green darken-2" style="margin-bottom: 10px; margin-right: 5px;">Replay <i class="fa-solid fa-reply"></i></a>
-          <a href="#" class="waves-effect btn red darken-2" style="margin-bottom: 10px;">Delete <i class="fa-regular fa-trash-can right"></i></a>
+          <a href="{{ url_for('replay_to_msg', any_message_id=read_message.id) }}" class="waves-effect btn green darken-2" style="margin-bottom: 10px; margin-right: 5px;">Replay <i class="fa-solid fa-reply"></i></a>
+          <a href=" {{ url_for('delete_message', any_msg_id=read_message.id) }}" class="waves-effect btn red darken-2" style="margin-bottom: 10px;">Delete <i class="fa-regular fa-trash-can right"></i></a>
         </div>
       </div>
     </div>

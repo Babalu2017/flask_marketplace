@@ -500,8 +500,36 @@ def new_msg():
     return render_template("new_message.html", users=users, users_list=users_list)
 
 
-@app.route("/replay_to_msg")
+@app.route("/replay_to_msg/<int:any_message_id>", methods=["GET", "POST"])
 @login_required
-def replay_to_msg():
+def replay_to_msg(any_message_id):
+    users_list = list(User.query.order_by(User.id).all())
+    replay_message = Message.query.get_or_404(any_message_id)
     users = current_user.username
-    return render_template("replay_to_msg.html", users=users)
+    current_user_id = current_user.id
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+
+    if request.method == "POST":
+        for user in users_list:
+            if user.id == replay_message.sender_id:
+                replay_msg = Message(
+                    subject = request.form.get("subject"),
+                    message = request.form.get("message"),
+                    msg_date = now,
+                    sender_id = current_user_id,
+                    recipient_id = user.id
+                )
+                db.session.add(replay_msg)
+                db.session.commit()
+                return redirect(url_for("inbox"))
+    return render_template("replay_to_msg.html", users=users, replay_message=replay_message, users_list=users_list)
+
+
+@app.route("/delete_message/<int:any_msg_id>")
+@login_required
+def delete_message(any_msg_id):
+    message = Message.query.get_or_404(any_msg_id)
+    db.session.delete(message)
+    db.session.commit()
+    # home comes from the first function see top page line 8
+    return redirect(url_for("inbox"))

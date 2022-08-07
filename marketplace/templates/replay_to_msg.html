@@ -11,15 +11,15 @@
 </div>
 
 <div class="row card-panel grey lighten-5">
+    {% for user in users_list %}
+    {% if user.id == replay_message.sender_id %}
     <form id="" class="col s12" method="POST" action="">
         <!-- user id -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix light-blue-text text-darken-4">account_circle</i>
                 <!-- <i class="fas fa-folder-open prefix light-blue-text text-darken-4"></i> -->
-                <input id="to_user_name" name="to_user_name" type="text" disabled="disabled">
-                <label for="to_user_name">To User</label>
-                  
+                <input id="to_user_name" name="to_user_name" type="text" value="{{ user.username }}">                  
             </div>
         </div>
         <!-- subject -->
@@ -27,8 +27,7 @@
             <div class="input-field col s12">
                 <i class="material-icons prefix light-blue-text text-darken-4">title</i>
                 <!-- <i class="fas fa-pencil-alt prefix light-blue-text text-darken-4"></i> -->
-                <input id="subject" name="subject" type="text" disabled="disabled">
-                <label for="subject">Re Subject</label>
+                <input id="subject" name="subject" type="text" value="RE: {{ replay_message.subject }}" >
             </div>
         </div>
         <!-- message -->
@@ -50,6 +49,8 @@
             </div>
         </div>
     </form>
+    {% endif %}
+    {% endfor %}
 </div>
 
 {% endblock %}
