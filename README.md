@@ -130,6 +130,12 @@ The W3C Markup Validator, W3C CSS Validator and JSHINT Validator Services were u
 6.  HTML new_message validator [view](marketplace/static/img/validator/new_message_w3_validator.png)
 7.  CSS  Style_Sheet validator [view](marketplace/static/img/validator/style_css_validator.png)
 8.  JS  Script.js [view](marketplace/static/img/validator/jhint_validator_1.png)
+## Lighthouse Testing
+1. dashboard [view](marketplace/static/img/lighthouse_testing/dashboard_lighthouse_testing.png)
+2. home [view](marketplace/static/img/lighthouse_testing/home_lighthouse-tetin.png)
+3. inbox [view](marketplace/static/img/lighthouse_testing/inbox_lighhouse_testing.png)
+4. login [view](marketplace/static/img/lighthouse_testing/login_lighthouse_testin.png)
+5. signup [view](marketplace/static/img/lighthouse_testing/sign_up_lighthouse_testing.png)
 
 
 
