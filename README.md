@@ -154,6 +154,17 @@ The W3C Markup Validator, W3C CSS Validator and JSHINT Validator Services were u
 -   The app crash if users insert a wrong postcode when they list an item. Error: [list out of range]. The bug was fixed adding if statements and flash messages. [view](marketplace/static/img/user_xd_towpath/fix_bug_wrong_postcode.png)
 
 
+### Programs and online resources
+1. GitHub, was used to store committed files
+2. Git and Gitpod, used in conjunction through Gitpod to commit and push files to GitHub
+3. Photoshop 2022, used for editing of screenshots and saving into WebP format.
+4. Colour scheme, used to create a colour palette.
+5. Lighthouse, used to test performance, accessibility, best practices, and SEO within the Chrome browser.
+6. Am I Responsive, used for generating the main README image.
+7. Flask/JinJa documentation Used to trouble shoot some templating issues with rendering for loops.
+8. Black Python code formatter, used to solve PEP8 issues and ensure code is readable.
+9. Lucid which was used to create the database models diagram. [view](marketplace/static/img/lighthouse_testing/towpath_flowchart.jpeg)
+
 ## Deployment
 
 ### Deploying a Project to Heroku
