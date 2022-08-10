@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="custom-offset light-blue-text text-darken-4 left-align" style="margin-bottom: 45px;">Shop by category</h3>
+<h3 class="custom-offset light-blue-text text-darken-4 left-align" style="margin-bottom: 45px;">{{ choesen_cat }}</h3>
 <div class="row custom-offset">
   <div class="col s6 m6 left-align sell-div" style="margin-bottom: 15px;">
     <a href="{{ url_for('add_item') }}" class="light-blue darken-3 sell waves-effect waves-light btn"><i

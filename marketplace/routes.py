@@ -71,7 +71,7 @@ def filter_by():
     print(f'here your category: {choesen_cat}')
     print(filter_by_category_id)
 
-    return render_template("filter_by.html",
+    return render_template("filter_by.html", choesen_cat=choesen_cat,
                            itemFunc=itemFunc, categories=categories, filter_by_category_id=filter_by_category_id, users=users, current_user_id=current_user_id)
 
 
