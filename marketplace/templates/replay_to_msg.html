@@ -6,41 +6,36 @@
 
 <div class="row" style="margin-top: 50px;">
     <div class="col s12" style="position: relative;">
-        <a href="{{ url_for('inbox') }}"> <span style="color: #03a9f4; margin-right: 10px;"><i class="fa-2x fa-solid fa-circle-left"></i></span><span style="position: absolute; margin-top: 5px;">Back to Inbox</span></a>
-    </div> 
+        <a href="{{ url_for('inbox') }}"> <span style="color: #03a9f4; margin-right: 10px;"><i
+                    class="fa-2x fa-solid fa-circle-left"></i></span><span
+                style="position: absolute; margin-top: 5px;">Back to Inbox</span></a>
+    </div>
 </div>
 
 <div class="row card-panel grey lighten-5">
     {% for user in users_list %}
     {% if user.id == replay_message.sender_id %}
     <form id="" class="col s12" method="POST" action="">
-        <!-- user id -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix light-blue-text text-darken-4">account_circle</i>
-                <!-- <i class="fas fa-folder-open prefix light-blue-text text-darken-4"></i> -->
-                <input id="to_user_name" name="to_user_name" type="text" value="{{ user.username }}">                  
+                <input id="to_user_name" name="to_user_name" type="text" value="{{ user.username }}">
             </div>
         </div>
-        <!-- subject -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix light-blue-text text-darken-4">title</i>
-                <!-- <i class="fas fa-pencil-alt prefix light-blue-text text-darken-4"></i> -->
-                <input id="subject" name="subject" type="text" value="RE: {{ replay_message.subject }}" >
+                <input id="subject" name="subject" type="text" value="RE: {{ replay_message.subject }}">
             </div>
         </div>
-        <!-- message -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix light-blue-text text-darken-4">mode_edit</i>
-                <!-- <i class="fas fa-align-left prefix light-blue-text text-darken-4"></i> -->
                 <textarea id="message" name="message" minlength="5" maxlength="250" type="text"
                     class="materialize-textarea validate" required></textarea>
                 <label for="message">Message</label>
             </div>
         </div>
-        <!-- submit button -->
         <div class="row">
             <div class="col s12 center-align">
                 <button type="submit" class="btn-large light-blue darken-4">

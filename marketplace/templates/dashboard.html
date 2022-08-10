@@ -3,9 +3,7 @@
 
 <h3 class="custom-offset light-blue-text text-darken-4 left-align" style="margin-bottom: 45px;">Today's picks</h3>
 
-<!-- <div class="container">
-  <div>{{ mappa | safe }}</div>
-</div> -->
+
 
 <div class="row custom-offset">
   <div class="col s6 m6 left-align sell-div" style="margin-bottom: 15px;">
@@ -34,13 +32,7 @@
       data-target="slide-out">Category<i class="material-icons left">filter_list</i></a>
   </div>
 </div>
-<!-- <div class="row">
-  <div class="col s12 catogories-div center-align">
-    <div>
-      <a class="sidenav-trigger light-blue darken-3 categories-btn  waves-effect waves-light btn" data-target="slide-out">Categories<i class="material-icons left">filter_list</i></a>
-    </div>    
-  </div>
-</div> -->
+
 
 <div class="row custom-offset">
   {% for item in itemFunc|sort(attribute="post_date") %}
@@ -49,13 +41,10 @@
       <div class="card-image card-img-top waves-effect waves-block waves-light">
         <img class="image activator" src="{{ item.file_img }}">
 
-        <!-- <img class="image activator" src="{{ url_for('static',filename='img/uploads/' + item.file_img) }}"> -->
-        <!-- <img class="image activator" src="https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/i1.jpg"> -->
       </div>
       <div class="card-content">
         <span class="card-title activator grey-text text-darken-4">{{ item.item_name }}
           <i class="material-icons right">more_vert</i></span>
-        <!-- <p><a href="#">This is a link</a></p> -->
         <p><strong>Listed by: </strong>{{ item.user.username}}</p>
         <p><strong>On: </strong>{{ item.post_date }}</p>
 
@@ -63,9 +52,7 @@
       <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">{{ item.item_name }}<i
             class="material-icons right">close</i></span>
-            <!-- <p>{{ item.location_pickup }}</p> -->
-            <div>{{ folium_map(item.location_pickup) | safe }}</div>
-            <!-- <p>{{item.location_pickup}}</p> -->
+        <div>{{ folium_map(item.location_pickup) | safe }}</div>
         <p><strong>Description: </strong>{{ item.item_description }}</p>
       </div>
     </div>

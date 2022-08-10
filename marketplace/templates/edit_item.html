@@ -5,63 +5,59 @@
 
 
 <div class="row card-panel grey lighten-5">
-    <form class="col s12" method="POST" action="{{ url_for('edit_item', any_item_id=item.id) }}" enctype="multipart/form-data">
-        <!-- add data/img -->
+    <form class="col s12" method="POST" action="{{ url_for('edit_item', any_item_id=item.id) }}"
+        enctype="multipart/form-data">
         <div class="file-field input-field">
             <div class="btn">
-              <span>File</span>
-              <input type="file" name="files" id="fileInput">
+                <span>File</span>
+                <input type="file" name="files" id="fileInput">
             </div>
             <div class="file-path-wrapper">
-              <input class="file-path validate" type="text" value="{{ item.file_img }}">
+                <input class="file-path validate" type="text" value="{{ item.file_img }}">
             </div>
         </div>
-        <!-- item name -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-pencil-alt prefix light-blue-text text-darken-4"></i>
-                <input id="item_name" name="item_name" value="{{ item.item_name }}" minlength="5" maxlength="50" type="text" class="validate" required>
+                <input id="item_name" name="item_name" value="{{ item.item_name }}" minlength="5" maxlength="50"
+                    type="text" class="validate" required>
                 <label for="item_name">item Name</label>
             </div>
         </div>
-        <!-- location pickup -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="fa-solid fa-location-pin prefix light-blue-text text-darken-4"></i>
-                <input id="location_pickup" name="location_pickup" value="{{ item.location_pickup }}" minlength="5" maxlength="100" type="text" class="validate"
-                    required>
+                <input id="location_pickup" name="location_pickup" value="{{ item.location_pickup }}" minlength="5"
+                    maxlength="100" type="text" class="validate" required>
                 <label for="location_pickup">address pick up</label>
             </div>
         </div>
-        <!-- item description -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-align-left prefix light-blue-text text-darken-4"></i>
-                <textarea id="item_description" name="item_description" minlength="5" maxlength="200"
-                    type="text" class="materialize-textarea validate" required>
+                <textarea id="item_description" name="item_description" minlength="5" maxlength="200" type="text"
+                    class="materialize-textarea validate" required>
                     {{- item.item_description -}}
                 </textarea>
                 <label for="item_description">item Description</label>
             </div>
-        </div>        
-        <!-- category id -->
+        </div>
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-folder-open prefix light-blue-text text-darken-4"></i>
                 <select id="category_id" name="category_id" class="validate" required>
                     <option value="" disabled>Choose Category</option>
                     {% for category in categories %}
-                        {% if category == item.category %}
-                            <option value="{{ category.id }}" selected>{{ category.category_name }}</option>
-                        {% else %}
-                            <option value="{{ category.id }}">{{ category.category_name }}</option>
-                        {% endif %}
+                    {% if category == item.category %}
+                    <option value="{{ category.id }}" selected>{{ category.category_name }}</option>
+                    {% else %}
+                    <option value="{{ category.id }}">{{ category.category_name }}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
                 <label for="category_id">Category</label>
             </div>
         </div>
-        <!-- submit button -->
         <div class="row">
             <div class="col s12 center-align">
                 <button type="submit" class="btn-large light-blue darken-1">

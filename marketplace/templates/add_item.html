@@ -16,18 +16,16 @@
 
 <div class="row card-panel grey lighten-5">
     <form id="imageForm" class="col s12" method="POST" action="/add_item" enctype="multipart/form-data">
-        <!-- add data/img -->
 
         <div class="file-field input-field">
             <div class="btn light-blue darken-4">
-              <span>File</span>
-              <input type="file" name="files" id="fileInput" required>
+                <span>File</span>
+                <input type="file" name="files" id="fileInput" required>
             </div>
             <div class="file-path-wrapper">
-              <input class="file-path validate" type="text" placeholder="Upload image">
+                <input class="file-path validate" type="text" placeholder="Upload image">
             </div>
         </div>
-        <!-- item name -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-pencil-alt prefix light-blue-text text-darken-4"></i>
@@ -36,16 +34,14 @@
                 <label for="item_name">item Name</label>
             </div>
         </div>
-        <!-- location pickup -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="fa-solid fa-location-pin prefix light-blue-text text-darken-4"></i>
-                <input id="location_pickup" name="location_pickup" minlength="5" maxlength="100" type="text" class="validate"
-                    required>
+                <input id="location_pickup" name="location_pickup" minlength="5" maxlength="100" type="text"
+                    class="validate" required>
                 <label for="location_pickup">postcode pick up</label>
             </div>
         </div>
-        <!-- item description -->
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-align-left prefix light-blue-text text-darken-4"></i>
@@ -54,31 +50,20 @@
                 <label for="item_description">item Description</label>
             </div>
         </div>
-        <!-- due date -->
-        <!-- <div class="row">
-            <div class="input-field col s12">
-                <i class="fas fa-calendar-alt prefix light-blue-text text-darken-4"></i>
-                <input id="due_date" name="due_date" type="text" class="datepicker validate" required>
-                <label for="due_date">Due Date</label>
-            </div>
-        </div> -->
-        <!-- category id -->
+
         <div class="row">
             <div class="input-field col s12">
                 <i class="fas fa-folder-open prefix light-blue-text text-darken-4"></i>
                 <select id="category_id" name="category_id" class="validate" required>
                     <option value="" disabled selected>Choose Category</option>
                     {% for category in categories %}
-                    <!-- {% if category.user_id == current_user_id %}
-                    <option value="{{ category.id }}">{{ category.category_name }}</option>
-                    {% endif %} -->
+
                     <option value="{{ category.id }}">{{ category.category_name }}</option>
                     {% endfor %}
                 </select>
                 <label for="category_id">Category</label>
             </div>
         </div>
-        <!-- submit button -->
         <div class="row">
             <div class="col s12 center-align">
                 <button type="submit" class="btn-large light-blue darken-4">

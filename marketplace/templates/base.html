@@ -17,15 +17,13 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
+
     <title>Towpath Marketplace</title>
 </head>
 
 <body>
 
     <header>
-        <!-- top navbar -->
-        <!-- dropdown content for user link -->
         <ul id="dropdown1" class="dropdown-content">
             <li>
                 <a href="{{ url_for('inbox') }}" style="color: darkblue;">Messages<i class="material-icons left"
@@ -64,8 +62,6 @@
         </div>
 
 
-        <!-- mobile sidenav -->
-        <!-- mobile dropdown content for user link -->
         <ul id="dropdown2" class="dropdown-content">
             <li>
                 <a href="{{ url_for('inbox') }}">Messages<i class="material-icons left">markunread</i></a>

@@ -15,7 +15,7 @@
     </li>
     <li><a href="{{ url_for('dashboard') }}" style="color: darkblue; background-color: rgb(229, 228, 226);"><i
           class="fa-solid fa-store" style="color:#00008B;"></i>Browse all</a></li>
-          <li><a class="filter" style="color: darkblue;">Filters by Category</a></li>
+    <li><a class="filter" style="color: darkblue;">Filters by Category</a></li>
     <li class="divider" style="margin-top: 0;"></li>
     {% for category in categories %}
     <li class="waves-effect"><a href="{{ url_for('filter_by', type=category.category_name) }}"
@@ -28,13 +28,7 @@
       data-target="slide-out">Category<i class="material-icons left">filter_list</i></a>
   </div>
 </div>
-<!-- <div class="row">
-  <div class="col s12 catogories-div center-align">
-    <div>
-      <a class="sidenav-trigger light-blue darken-3 categories-btn  waves-effect waves-light btn" data-target="slide-out">Categories<i class="material-icons left">filter_list</i></a>
-    </div>    
-  </div>
-</div> -->
+
 
 <div class="row custom-offset">
   {% for item in filter_by_category_id|sort(attribute="post_date") %}
@@ -43,13 +37,10 @@
       <div class="card-image card-img-top waves-effect waves-block waves-light">
         <img class="image activator" src="{{ item.file_img }}">
 
-        <!-- <img class="image activator" src="{{ url_for('static',filename='img/uploads/' + item.file_img) }}"> -->
-        <!-- <img class="image activator" src="https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/i1.jpg"> -->
       </div>
       <div class="card-content">
         <span class="card-title activator grey-text text-darken-4">{{ item.item_name }}
           <i class="material-icons right">more_vert</i></span>
-        <!-- <p><a href="#">This is a link</a></p> -->
         <p><strong>User: </strong>{{ item.user.username}}</p>
         <p>Listed on: {{ item.post_date }}</p>
 
@@ -57,8 +48,7 @@
       <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">{{ item.item_name }}<i
             class="material-icons right">close</i></span>
-            <div>{{ item.location_pickup | safe }}</div>
-            <!-- <div>{{ mappa | safe }}</div> -->
+        <div>{{ item.location_pickup | safe }}</div>
         <p>Description: {{ item.item_description }}</p>
       </div>
     </div>

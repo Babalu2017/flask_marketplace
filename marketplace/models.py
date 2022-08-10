@@ -1,4 +1,3 @@
-from email import message
 from marketplace import db, login_manager
 from flask_login import UserMixin
 
@@ -8,7 +7,6 @@ def load_user(user_id):
 
 
 class User(db.Model, UserMixin):
-    # schema for the User model
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -19,13 +17,11 @@ class User(db.Model, UserMixin):
 
 
     def __repr__(self):
-        # return '<User %r>' % self.id, self.username
         return f"<User %r>' % self.id, self.username"
 
     
 
 class Category(db.Model):
-    # schema for the Category model
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(25), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
@@ -33,9 +29,6 @@ class Category(db.Model):
     
 
     def __repr__(self):
-        # __repr__ to represent itself in the form of a string
-        # return f"Category: {self.id, self.category_name, self.user_id,}"
-        
         return "#{0} - Category: {1} | User_id: {2}".format(
             self.id, self.category_name, self.user_id
         )
@@ -43,7 +36,6 @@ class Category(db.Model):
 
 
 class Item(db.Model):
-    # schema for the Item model
     id = db.Column(db.Integer, primary_key=True)
     item_name = db.Column(db.String(50), nullable=False)
     item_description = db.Column(db.Text, nullable=False)
@@ -55,14 +47,12 @@ class Item(db.Model):
     
 
     def __repr__(self):
-        # __repr__ to represent itself in the form of a string
         return "#{0} - Item: {1}".format(
             self.id, self.item_name
         )
 
 
 class Message(db.Model):
-    # schema for Message model
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.Text, nullable=False)
     message = db.Column(db.Text, nullable=False)

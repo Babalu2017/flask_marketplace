@@ -1,4 +1,3 @@
-/* Sticky Footer */
 
 
 body {
@@ -11,7 +10,6 @@ main {
   flex: 1 0 auto;
 }
 
-/* align center inside modal */
 .modal-task-test {
   text-align: center !important;
 }
@@ -24,12 +22,10 @@ main {
   display: inline-block !important;
   margin: 0 15px;
   float: none;
-  /*if you set float already */
 }
 
 
 
-/* extend validation to options in form */
 select[required]:focus{
   outline: none !important;
 }
@@ -81,7 +77,6 @@ a.filter, a.filter:hover {
 .sidenav-fixed-custom {
   position:fixed;
   top:70px;
-  /* z-index: -1 !important; */
   
 
 }
@@ -103,7 +98,6 @@ footer {
   .sidenav-fixed-custom {
     position:fixed;
     top:65px;
-    /* z-index: 2 !important; */
     
   }
 
@@ -123,17 +117,13 @@ footer {
 
 
 
-/*  medium/large screen */
 @media (min-width:540px) {
 
-  /* btns in dashboard */
   
-  /* add space to logo */
   .brand-logo {
     margin-left: 15px;
   }
 
-  /* resize card img in */
   .card-img-top {
     width: 100%;
     height: 40vh;
@@ -144,7 +134,6 @@ footer {
 
 @media (max-width:540px) {
 
-  /* btns in dashboard */
   
   
   .users_display {
