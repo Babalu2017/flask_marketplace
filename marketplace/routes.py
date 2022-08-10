@@ -381,24 +381,33 @@ def add_item():
             files = unique_filename
             # print(files)
             # print(now)
-        flash('File(s) successfully uploaded')
-
-        
-
-        item = Item(
+        postcode = request.form.get("location_pickup")
+        pcode = postcode.replace(" ","")
+        if len(pcode) <=4:
+            flash('You must insert a valid postcode !', category='error')
+        elif len(pcode)>=9:
+            flash('You must insert a valid postcode !', category='error')
+        elif pcode.isalpha():
+             flash('You must insert a valid postcode !', category='error')
+        elif pcode.isdigit():
+            flash('You must insert a valid postcode !', category='error')
+        else:
+            post_code = pcode.upper()
+            item = Item(
             item_name=request.form.get("item_name"),
             item_description=request.form.get("item_description"),
-            location_pickup=request.form.get("location_pickup"),
+            location_pickup=post_code,
             category_id=request.form.get("category_id"),
             file_img=f"https://flaskappmarketplace.s3.eu-west-2.amazonaws.com/{unique_filename}",
             post_date=now,
             user_id=current_user.id
-
         )
-
-        db.session.add(item)
-        db.session.commit()
-        return redirect(url_for("home"))
+            flash('Item successfully listed')
+            db.session.add(item)
+            db.session.commit()
+            return redirect(url_for("home"))
+            
+        
     
     return render_template("add_item.html", categories=categories, users=users, current_user_id=current_user_id)
 
@@ -485,6 +494,7 @@ def new_msg():
     now = time.strftime("%Y-%m-%d %H:%M:%S")
 
     if request.method == "POST":
+        flash('Message successfully sent')
 
         message = Message(
             subject=request.form.get("subject"),
