@@ -8,6 +8,10 @@ Towpath marketplace is a platform for individuals to sell goods/services in a hy
 
 <h2 align="center"><img src="marketplace/static/img/wireframes/am_i_responsive.jpg"></h2>
 
+### DATABASE
+
+Lucid which was used to create the database models diagram. [view](marketplace/static/img/lighthouse_testing/towpath_flowchart.jpeg)
+
 -   ### Design
     -   #### Colour Scheme
         -   The main colours used are white and blue provided by materialized. Those colors provide a more elegant look to the website.
