@@ -10,7 +10,7 @@ Towpath marketplace is a platform for individuals to sell goods/services in a hy
 
 ### DATABASE
 
-1. PostgresSql
+1. PostgreSql
 2. AWS_S3
 
 - Lucid which was used to create the database models diagram. [view](marketplace/static/img/lighthouse_testing/towpath_flowchart.jpeg)
